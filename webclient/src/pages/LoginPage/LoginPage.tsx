@@ -8,19 +8,17 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/material'
-
+import { useDispatch } from 'react-redux'
+import { setUserType } from '../../reducers/userReducer'
 export default function Login() {
-    // TODO
+    const dispatch = useDispatch()
     const handleSubmit = (event: {
         preventDefault: () => void
         currentTarget: HTMLFormElement | undefined
     }) => {
         event.preventDefault()
-        const data = new FormData(event.currentTarget)
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        })
+        console.log('jo vagyok')
+        dispatch(setUserType('admin'))
     }
 
     return (
