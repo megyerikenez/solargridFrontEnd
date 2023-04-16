@@ -2,11 +2,12 @@ import {
     Box,
     InputLabel,
     MenuItem,
-    NativeSelect,
     Select,
     TextField,
     Typography,
 } from '@mui/material'
+
+const possibleUserTypes = ['Szakember', 'Raktárvezető', 'Raktáros']
 
 export function AdminAddNewUser() {
     return (
@@ -63,15 +64,20 @@ export function AdminAddNewUser() {
                     Type
                 </InputLabel>
                 <Select
-                    defaultValue={10}
+                    defaultValue='Raktáros'
                     inputProps={{
                         name: 'type',
                         id: 'uncontrolled-native',
                     }}
                 >
-                    <MenuItem value={10}>Szakember</MenuItem>
-                    <MenuItem value={20}>Raktárvezető</MenuItem>
-                    <MenuItem value={30}>Raktáros</MenuItem>
+                    {possibleUserTypes.map((type) => (
+                        <MenuItem
+                            key={type}
+                            value={type}
+                        >
+                            {type}
+                        </MenuItem>
+                    ))}
                 </Select>
             </Box>
         </Box>
