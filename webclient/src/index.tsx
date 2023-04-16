@@ -5,13 +5,14 @@ import { Provider } from 'react-redux'
 import { userSlice } from './reducers/userReducer'
 import LoginPage from './pages/LoginPage/LoginPage'
 import { store } from './store'
+import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
     <Provider store={store}>
         <React.StrictMode>
-            <LoginPage />
+            <AdminAddNewUser />
         </React.StrictMode>
     </Provider>
 )
