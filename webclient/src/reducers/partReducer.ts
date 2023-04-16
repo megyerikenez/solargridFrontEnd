@@ -21,8 +21,14 @@ export const partSlice = createSlice({
         addPart: (state, action: PayloadAction<partInterface>) => {
             state.shelf.push(action.payload)
         },
+        updatePart: (state, action: PayloadAction<partInterface>) => {
+            const index = state.shelf.findIndex(
+                (part) => part.name === action.payload.name
+            )
+            state.shelf[index] = action.payload
+        },
     },
 })
 
-export const { addPart } = partSlice.actions
+export const { addPart, updatePart } = partSlice.actions
 export default partSlice.reducer

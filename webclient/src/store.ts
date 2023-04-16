@@ -8,3 +8,5 @@ export const store = configureStore({
         partReducer: partSlice.reducer,
     },
 })
+
+export type RootState = ReturnType<typeof store.getState>
