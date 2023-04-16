@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Provider } from 'react-redux'
-import { userSlice } from './reducers/userReducer'
 import { store } from './store'
 import { AddNewPart } from './pages/NewPartPage/AddNewPart'
 import { ListPart } from './pages/ListPartPage/ListPartPage'
@@ -17,5 +16,3 @@ root.render(
         </React.StrictMode>
     </Provider>
 )
-const counterReducer = userSlice.reducer
-export default counterReducer
