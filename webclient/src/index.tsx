@@ -9,6 +9,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/LoginPage/Login'
 import { Navbar } from './components/NavBar/Navbar'
 import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
+import { NewProject } from './pages/NewProjectPage/NewProject'
+import { ListProject } from './pages/ListProject/ListProject'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -33,6 +35,14 @@ root.render(
                     <Route
                         path='/adduser'
                         element={<AdminAddNewUser />}
+                    />
+                    <Route
+                        path='/newproject'
+                        element={<NewProject />}
+                    />
+                    <Route
+                        path='/listprojects'
+                        element={<ListProject />}
                     />
                 </Routes>
             </React.StrictMode>

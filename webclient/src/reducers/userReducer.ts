@@ -6,7 +6,7 @@ export interface userStateInterface {
 }
 
 const initialState = {
-    userType: 'admin',
+    userType: 'specialist',
     userName: '',
 }
 
