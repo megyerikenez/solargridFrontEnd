@@ -1,16 +1,10 @@
+import { Box, Button, TextField, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { partInterface, updatePart } from '../../reducers/partReducer'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    TextField,
-    Button,
-} from '@mui/material'
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 export function ListPart() {
     const parts = useSelector((state: RootState) => state.partReducer.shelf)
@@ -41,7 +35,22 @@ export function ListPart() {
     }
 
     return (
-        <>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '60%',
+                margin: 'auto',
+            }}
+        >
+            <Typography
+                component='h1'
+                variant='h5'
+            >
+                List of parts
+            </Typography>
+
             <Table>
                 <TableHead>
                     <TableRow>
@@ -74,9 +83,10 @@ export function ListPart() {
             <Button
                 variant='contained'
                 onClick={handleSave}
+                sx={{ mt: 3 }}
             >
                 Save
             </Button>
-        </>
+        </Box>
     )
 }
