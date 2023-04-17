@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { addPart } from '../../reducers/partReducer'
+import { Link } from 'react-router-dom'
 
 export function AddNewPart() {
     const dispatch = useDispatch()
@@ -74,6 +75,7 @@ export function AddNewPart() {
                 >
                     Add new part
                 </Button>
+                <Link to='list'>list of parts</Link>
             </Box>
         </Box>
     )
