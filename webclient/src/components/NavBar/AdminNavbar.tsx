@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
     AppBar,
     Box,
@@ -23,11 +23,11 @@ interface Props {
 
 const drawerWidth = 240
 const navItems = [
-    { name: 'Add part', link: '/addpart' },
-    { name: 'Parts', link: '/partlist' },
+    { name: 'Add new user', link: '/adduser' },
+    { name: 'List users', link: '/userlist' },
 ]
 
-export default function WarehouseManagerNavbar(props: Props) {
+export default function AdminNavBar(props: Props) {
     const { window } = props
     const [mobileOpen, setMobileOpen] = useState(false)
 

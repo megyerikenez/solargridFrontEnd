@@ -23,8 +23,9 @@ interface Props {
 
 const drawerWidth = 240
 const navItems = [
-    { name: 'Add part', link: '/addpart' },
-    { name: 'Parts', link: '/partlist' },
+    { name: 'New', link: '/newproject' },
+    { name: 'Projects', link: '/listprojects' },
+    { name: 'Parts', link: '/listparts' },
 ]
 
 export default function WarehouseManagerNavbar(props: Props) {

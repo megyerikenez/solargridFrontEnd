@@ -4,9 +4,11 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { AddNewPart } from './pages/NewPartPage/AddNewPart'
-import { ListPart } from './pages/ListPartPage/ListPartPage'
+import { ListPart } from './pages/ListPartPage/ListPart'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import WarehouseManagerNavbar from './components/NavBar/WarehouseManagerNavbar'
+import Login from './pages/LoginPage/Login'
+import { Navbar } from './components/NavBar/Navbar'
+import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -14,15 +16,23 @@ root.render(
     <BrowserRouter>
         <Provider store={store}>
             <React.StrictMode>
-                <WarehouseManagerNavbar></WarehouseManagerNavbar>
+                <Navbar />
                 <Routes>
                     <Route
                         path='/'
+                        element={<Login />}
+                    />
+                    <Route
+                        path='/partlist'
+                        element={<ListPart />}
+                    />
+                    <Route
+                        path='/addpart'
                         element={<AddNewPart />}
                     />
                     <Route
-                        path='/list'
-                        element={<ListPart />}
+                        path='/adduser'
+                        element={<AdminAddNewUser />}
                     />
                 </Routes>
             </React.StrictMode>

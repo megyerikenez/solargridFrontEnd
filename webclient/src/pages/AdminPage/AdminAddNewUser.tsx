@@ -7,7 +7,11 @@ import {
     Typography,
 } from '@mui/material'
 
-const possibleUserTypes = ['Szakember', 'Raktárvezető', 'Raktáros']
+const possibleUserTypes = [
+    'Specialist',
+    'Warehouse Manager',
+    'Warehouse Worker',
+]
 
 export function AdminAddNewUser() {
     return (
@@ -64,7 +68,7 @@ export function AdminAddNewUser() {
                     Type
                 </InputLabel>
                 <Select
-                    defaultValue='Raktáros'
+                    defaultValue='Specialist'
                     inputProps={{
                         name: 'type',
                         id: 'uncontrolled-native',

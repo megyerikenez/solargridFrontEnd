@@ -1,7 +1,6 @@
-import { userStateInterface } from '../reducers/userReducer'
+import { RootState } from '../store'
 
-export const selectUserType = (userState: userStateInterface) =>
-    userState.userType
+export const selectUserType = (state: RootState) => state.userReducer.userType
 
-export const selectUserName = (userState: userStateInterface) =>
-    userState.userName
+export const selectUserName = (userState: RootState) =>
+    userState.userReducer.userName

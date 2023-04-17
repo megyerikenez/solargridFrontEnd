@@ -1,3 +1,3 @@
-// create a selector that returns the part state
-import { shelfStateInterface } from '../reducers/partReducer'
-export const selectPartState = (state: shelfStateInterface) => state.shelf
+import { RootState } from '../store'
+
+export const selectPartState = (state: RootState) => state.partReducer.shelf

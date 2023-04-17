@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { selectUserType } from '../selectors/userSelectors'
 
 export interface userStateInterface {
     userType: string
@@ -7,7 +6,7 @@ export interface userStateInterface {
 }
 
 const initialState = {
-    userType: '',
+    userType: 'admin',
     userName: '',
 }
 
@@ -17,7 +16,6 @@ export const userSlice = createSlice({
     reducers: {
         setUserType: (state, action) => {
             state.userType = action.payload
-            console.log(selectUserType(state))
         },
     },
 })
