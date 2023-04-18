@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     InputLabel,
     MenuItem,
     Select,
@@ -7,8 +8,7 @@ import {
     Typography,
 } from '@mui/material'
 import { generatePassword } from '../LoginPage/passwordGenerator'
-
-const password = generatePassword()
+import React from 'react'
 
 const possibleUserTypes = [
     'Specialist',
@@ -17,6 +17,34 @@ const possibleUserTypes = [
 ]
 
 export function AdminAddNewUser() {
+    const [name, setName] = React.useState('')
+    const [email, setEmail] = React.useState('')
+    const [role, setRole] = React.useState('Specialist')
+    const [password, setPassword] = React.useState(generatePassword())
+
+    const handleSubmit = (event: any) => {
+        event.preventDefault()
+
+        fetch('http://localhost:100/Auth/Register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                role,
+                password,
+            }),
+        })
+            .then((response) => {
+                console.log('sikeres')
+            })
+            .catch((error) => {
+                console.error('Error:', error)
+            })
+    }
+
     return (
         <Box
             sx={{
@@ -32,6 +60,8 @@ export function AdminAddNewUser() {
                 Add a new user
             </Typography>
             <Box
+                component='form'
+                onSubmit={handleSubmit}
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -48,9 +78,9 @@ export function AdminAddNewUser() {
                     name='name'
                     autoComplete='name'
                     autoFocus
-                >
-                    <InputLabel htmlFor='name'>Name</InputLabel>
-                </TextField>
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                />
                 <TextField
                     margin='normal'
                     required
@@ -60,9 +90,9 @@ export function AdminAddNewUser() {
                     name='email'
                     autoComplete='email'
                     autoFocus
-                >
-                    <InputLabel htmlFor='email'>Email</InputLabel>
-                </TextField>
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                />
                 <TextField
                     margin='normal'
                     required
@@ -79,16 +109,17 @@ export function AdminAddNewUser() {
                 </TextField>
                 <InputLabel
                     variant='standard'
-                    htmlFor='uncontrolled-native'
+                    htmlFor='role'
                     required
                 >
                     Type
                 </InputLabel>
                 <Select
-                    defaultValue='Specialist'
+                    value={role}
+                    onChange={(event) => setRole(event.target.value)}
                     inputProps={{
                         name: 'type',
-                        id: 'uncontrolled-native',
+                        id: 'type',
                     }}
                 >
                     {possibleUserTypes.map((type) => (
@@ -100,6 +131,19 @@ export function AdminAddNewUser() {
                         </MenuItem>
                     ))}
                 </Select>
+                <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    sx={{ mt: 3, mb: 2 }}
+                >
+                    <Typography
+                        component='h1'
+                        variant='h5'
+                    >
+                        Add User
+                    </Typography>
+                </Button>
             </Box>
         </Box>
     )

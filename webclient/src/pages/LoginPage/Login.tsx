@@ -7,19 +7,44 @@ import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import { Container } from '@mui/material'
+import { Container, Snackbar } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { setUserType } from '../../reducers/userReducer'
+import { useState } from 'react'
+import { setUserData } from '../../reducers/userReducer'
 
 export default function Login() {
     const dispatch = useDispatch()
-    const handleSubmit = (event: {
-        preventDefault: () => void
-        currentTarget: HTMLFormElement | undefined
-    }) => {
+    const [open, setOpen] = useState(false)
+    const handleSubmit = async (event: any) => {
         event.preventDefault()
-        console.log('jo vagyok')
-        dispatch(setUserType('admin'))
+
+        const email = event.target.email.value
+        const password = event.target.password.value
+
+        const data = {
+            email: email,
+            password: password,
+        }
+
+        const response = await fetch('http://localhost:100/Auth/Login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+
+        const result = await response.json()
+        console.log(result)
+        dispatch(
+            setUserData({
+                userType: result.role,
+                userName: result.name,
+                userEmail: result.email,
+                userID: result.id,
+            })
+        )
+        setOpen(true)
     }
 
     return (
@@ -27,6 +52,13 @@ export default function Login() {
             component='main'
             maxWidth='lg'
         >
+            <Snackbar
+                open={open}
+                message='Login successfully'
+                onClose={(event, reason) => {
+                    setOpen(false)
+                }}
+            />
             <Box
                 sx={{
                     marginTop: 8,

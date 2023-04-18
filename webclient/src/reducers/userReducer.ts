@@ -3,13 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface userStateInterface {
     userType: string
     userName: string
-    jwtToken: string
+    userID: string
+    userEmail: string
 }
 
 const initialState = {
-    userType: 'admin',
+    userType: '',
     userName: '',
-    jwtToken: '',
+    userID: '',
+    userEmail: '',
 }
 
 export const userSlice = createSlice({
@@ -19,8 +21,29 @@ export const userSlice = createSlice({
         setUserType: (state, action) => {
             state.userType = action.payload
         },
+        setUserName: (state, action) => {
+            state.userName = action.payload
+        },
+        setUserEmail: (state, action) => {
+            state.userEmail = action.payload
+        },
+        setUserID: (state, action) => {
+            state.userID = action.payload
+        },
+        setUserData(state, action) {
+            state.userType = action.payload.userType
+            state.userName = action.payload.userName
+            state.userEmail = action.payload.userEmail
+            state.userID = action.payload.userID
+        },
     },
 })
 
-export const { setUserType } = userSlice.actions
+export const {
+    setUserType,
+    setUserName,
+    setUserEmail,
+    setUserID,
+    setUserData,
+} = userSlice.actions
 export default userSlice.reducer

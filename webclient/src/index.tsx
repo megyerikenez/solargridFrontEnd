@@ -11,6 +11,7 @@ import { Navbar } from './components/NavBar/Navbar'
 import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
 import { NewProject } from './pages/NewProjectPage/NewProject'
 import { ListProject } from './pages/ListProject/ListProject'
+import { ToastContainer } from 'react-toastify'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
