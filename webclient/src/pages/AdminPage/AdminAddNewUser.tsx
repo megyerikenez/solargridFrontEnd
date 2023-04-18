@@ -6,6 +6,9 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+import { generatePassword } from '../LoginPage/passwordGenerator'
+
+const password = generatePassword()
 
 const possibleUserTypes = [
     'Specialist',
@@ -59,6 +62,20 @@ export function AdminAddNewUser() {
                     autoFocus
                 >
                     <InputLabel htmlFor='email'>Email</InputLabel>
+                </TextField>
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='password'
+                    name='password'
+                    helperText='Copy this password and send to the user'
+                    autoComplete='password'
+                    autoFocus
+                    value={password}
+                    disabled
+                >
+                    <InputLabel htmlFor='password'>Password</InputLabel>
                 </TextField>
                 <InputLabel
                     variant='standard'
