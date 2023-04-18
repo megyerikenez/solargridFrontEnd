@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface userStateInterface {
     userType: string
     userName: string
+    jwtToken: string
 }
 
 const initialState = {
     userType: 'admin',
     userName: '',
+    jwtToken: '',
 }
 
 export const userSlice = createSlice({

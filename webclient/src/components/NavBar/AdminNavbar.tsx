@@ -91,7 +91,10 @@ export default function AdminNavBar(props: Props) {
                     ></Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         {navItems.map((item) => (
-                            <Link to={item.link}>
+                            <Link
+                                to={item.link}
+                                key={item.name}
+                            >
                                 <Button
                                     key={item.name}
                                     sx={{ color: '#fff' }}
