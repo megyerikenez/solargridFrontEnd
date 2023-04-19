@@ -25,11 +25,11 @@ root.render(
                         element={<Login />}
                     />
                     <Route
-                        path='/partlist'
+                        path='/componenttypelist'
                         element={<ListComponentType />}
                     />
                     <Route
-                        path='/addpart'
+                        path='/addcomponenttype'
                         element={<NewComponentType />}
                     />
                     <Route

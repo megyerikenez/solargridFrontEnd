@@ -33,17 +33,34 @@ export function ListProject() {
         (state: RootState) => state.projectReducer.projects
     )
 
-    const handleSelectChange = (
-        // TODO ADD endpoint to update project status
+    const handleSelectChange = async (
         event: React.ChangeEvent<{ value: unknown }>,
         id: string
     ) => {
-        dispatch(
-            updateProjectStatus({
-                id,
-                status: event.target.value as ProjectStatus,
-            })
-        )
+        const status = event.target.value as ProjectStatus
+
+        try {
+            const response = await fetch(
+                `http://localhost:100/Project/${id}/phase/${status}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id, status }),
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+
+            dispatch(updateProjectStatus({ id, status }))
+        } catch (error) {
+            console.error(error)
+            // handle error
+        }
     }
 
     return (

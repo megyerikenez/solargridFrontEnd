@@ -109,7 +109,6 @@ export function NewComponentType() {
                 >
                     Add new component
                 </Button>
-                <Link to='list'>list of components</Link>
             </Box>
         </Box>
     ) : (

@@ -150,7 +150,6 @@ export function NewProject() {
                 >
                     Add new project
                 </Button>
-                <Link to='list'>list of projects</Link>
             </Box>
         </Box>
     )
