@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 
-export const UnathorizedAccess = () => {
+export const UnauthorizedAccess = () => {
     return (
         <Typography
             component='h1'

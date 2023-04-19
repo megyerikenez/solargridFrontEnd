@@ -11,7 +11,7 @@ import { generatePassword } from '../LoginPage/passwordGenerator'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import { UnathorizedAccess } from '../UnathorizedAccess/UnathorizedAccess'
+import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 
 const possibleUserTypes = ['Specialist', 'WarehouseManager', 'WarehouseWorker']
 
@@ -148,6 +148,6 @@ export function AdminAddNewUser() {
             </Box>
         </Box>
     ) : (
-        <UnathorizedAccess />
+        <UnauthorizedAccess />
     )
 }

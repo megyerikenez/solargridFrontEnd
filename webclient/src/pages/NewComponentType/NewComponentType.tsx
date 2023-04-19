@@ -1,7 +1,9 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addcomponent } from '../../reducers/componentReducer'
 import { Link } from 'react-router-dom'
+import { selectUserType } from '../../selectors/userSelectors'
+import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 
 export function NewComponentType() {
     const dispatch = useDispatch()
@@ -17,8 +19,9 @@ export function NewComponentType() {
         const maxQuantity = parseInt(target.componentMaxQuantity.value)
         dispatch(addcomponent({ name, price, maxQuantity }))
     }
+    const userType = useSelector(selectUserType)
 
-    return (
+    return userType === 'warehousemanager' ? (
         <Box
             sx={{
                 display: 'flex',
@@ -78,5 +81,7 @@ export function NewComponentType() {
                 <Link to='list'>list of components</Link>
             </Box>
         </Box>
+    ) : (
+        <UnauthorizedAccess />
     )
 }
