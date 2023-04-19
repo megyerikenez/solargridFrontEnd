@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 export function ListComponentType() {
     const components = useSelector(
-        (state: RootState) => state.componentReducer.components
+        (state: RootState) => state.componentReducerType.components
     )
     const [editedComponents, setEditedComponents] = useState<
         Record<string, { price: number; maxQuantityPerSlot: number }>

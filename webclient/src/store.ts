@@ -6,7 +6,7 @@ import { projectSlice } from './reducers/projectReducer'
 export const store = configureStore({
     reducer: {
         userReducer: userSlice.reducer,
-        componentReducer: componentTypeSlice.reducer,
+        componentReducerType: componentTypeSlice.reducer,
         projectReducer: projectSlice.reducer,
     },
 })
