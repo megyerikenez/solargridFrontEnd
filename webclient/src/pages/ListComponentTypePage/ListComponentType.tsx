@@ -8,7 +8,7 @@ import {
 } from '../../reducers/componentReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
-export function Listcomponent() {
+export function ListComponentType() {
     const components = useSelector(
         (state: RootState) => state.componentReducer.components
     )
@@ -27,16 +27,37 @@ export function Listcomponent() {
     }
 
     const handleSave = () => {
-        const newcomponents = components.map((component) => ({
-            ...component,
-            price:
+        components.forEach((component) => {
+            const updatedPrice =
                 editedcomponents[component.name] !== undefined
                     ? editedcomponents[component.name]
-                    : component.price,
-        }))
+                    : component.price
 
-        newcomponents.forEach((component) => {
-            dispatch(updatecomponent(component))
+            const updatedComponent = {
+                id: component.id,
+                name: component.name,
+                price: updatedPrice,
+                maxQuantityPerSlot: component.maxQuantityPerSlot,
+            }
+
+            fetch(`http://localhost:100/ComponentType?id=${component.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedComponent),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(
+                            `HTTP error! status: ${response.status}`
+                        )
+                    }
+                    console.log(`Updated ${component.name} successfully!`)
+                })
+                .catch((error) => {
+                    console.error(`Error updating ${component.name}:`, error)
+                })
         })
     }
 

@@ -4,7 +4,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { NewComponentType } from './pages/NewComponentType/NewComponentType'
-import { Listcomponent } from './pages/ListPartPage/ListPart'
+import { ListComponentType } from './pages/ListComponentTypePage/ListComponentType'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/LoginPage/Login'
 import { Navbar } from './components/NavBar/Navbar'
@@ -26,7 +26,7 @@ root.render(
                     />
                     <Route
                         path='/partlist'
-                        element={<Listcomponent />}
+                        element={<ListComponentType />}
                     />
                     <Route
                         path='/addpart'
