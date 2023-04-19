@@ -12,6 +12,7 @@ import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
 import { NewProject } from './pages/NewProjectPage/NewProject'
 import { ListProject } from './pages/ListProject/ListProject'
 import { IncomingComponents } from './pages/IncomingComponentsPage/IncomingComponents'
+import { Components } from './pages/ListComponentsPage/Components'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -48,6 +49,10 @@ root.render(
                     <Route
                         path='/incomingcomponents'
                         element={<IncomingComponents />}
+                    />
+                    <Route
+                        path='listcomponents'
+                        element={<Components />}
                     />
                 </Routes>
             </React.StrictMode>

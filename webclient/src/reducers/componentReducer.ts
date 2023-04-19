@@ -2,9 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { componentTypeInterface } from './componentTypeReducer'
 
 export interface componentInterface {
-    componentType: componentTypeInterface | string
+    componentType: componentTypeInterface
     id: string
-    storage: string
+    storage: {
+        row: number
+        col: number
+        level: number
+    }
     occupied: boolean
     projectId: string
     quantity: number

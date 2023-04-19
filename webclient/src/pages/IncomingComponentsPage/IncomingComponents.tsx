@@ -34,28 +34,30 @@ export const IncomingComponents = () => {
             quantity,
         }
 
-        try {
-            const response = await fetch('http://localhost:100/Component', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            })
-            if (!response.ok) {
-                console.error(
-                    `Failed to add incoming component: ${response.status} ${response.statusText}`
-                )
-                return
-            }
-            setComponentTypeId('')
-            setStorage('')
-            setProjectId('')
-            setQuantity(0)
+        if (quantity <= 0) {
+            try {
+                const response = await fetch('http://localhost:100/Component', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                })
+                if (!response.ok) {
+                    console.error(
+                        `Failed to add incoming component: ${response.status} ${response.statusText}`
+                    )
+                    return
+                }
+                setComponentTypeId('')
+                setStorage('')
+                setProjectId('')
+                setQuantity(0)
 
-            console.log('Incoming component added successfully')
-        } catch (error) {
-            console.error(`Failed to add incoming component: ${error}`)
+                console.log('Incoming component added successfully')
+            } catch (error) {
+                console.error(`Failed to add incoming component: ${error}`)
+            }
         }
     }
 
