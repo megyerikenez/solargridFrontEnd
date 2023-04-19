@@ -1,25 +1,23 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
-import { useEffect } from 'react'
-import { addNewComponent } from '../../reducers/componentReducer'
+import {
+    MenuItem,
+    Select,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 
-import { componentInterface } from '../../reducers/componentReducer'
 export const Components = () => {
+    // get all projects from the store
+
+    const projects = useSelector(
+        (state: RootState) => state.projectReducer.projects
+    )
+    console.log(projects)
     const dispatch = useDispatch()
-    useEffect(() => {
-        const fetchComponents = async () => {
-            async function getComponents() {
-                const response = await fetch('http://localhost:100/Component')
-                const data = await response.json()
-                data.forEach((component: componentInterface) => {
-                    dispatch(addNewComponent(component))
-                })
-            }
-            await getComponents()
-        }
-        fetchComponents()
-    }, [dispatch])
     const components = useSelector(
         (state: RootState) => state.componentReducer.components
     )
@@ -52,9 +50,17 @@ export const Components = () => {
                                 <TableCell>
                                     {component.occupied ? 'Yes' : 'No'}
                                 </TableCell>
-                                <TableCell>
-                                    {component.projectId || '-'}
-                                </TableCell>
+                                <Select>
+                                    {projects.map((project) => (
+                                        <MenuItem
+                                            id='project'
+                                            value={project.id}
+                                        >
+                                            {project.place}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+
                                 <TableCell>{component.quantity}</TableCell>
                             </TableRow>
                         )

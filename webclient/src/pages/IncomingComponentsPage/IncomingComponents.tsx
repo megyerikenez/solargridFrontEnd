@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../store'
-import { addNewComponent } from '../../reducers/componentReducer'
 import { Box, Button, MenuItem, TextField } from '@mui/material'
 import {
     selectComponentTypeOptions,
@@ -34,7 +32,7 @@ export const IncomingComponents = () => {
             quantity,
         }
 
-        if (quantity <= 0) {
+        if (quantity >= 0) {
             try {
                 const response = await fetch('http://localhost:100/Component', {
                     method: 'POST',
@@ -53,7 +51,6 @@ export const IncomingComponents = () => {
                 setStorage('')
                 setProjectId('')
                 setQuantity(0)
-
                 console.log('Incoming component added successfully')
             } catch (error) {
                 console.error(`Failed to add incoming component: ${error}`)
