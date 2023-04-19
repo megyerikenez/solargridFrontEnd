@@ -4,6 +4,7 @@ import SpecialistNavbar from './SpecialistNavbar'
 import WarehouseManagerNavbar from './SpecialistNavbar'
 import { useEffect } from 'react'
 import AdminNavBar from './AdminNavbar'
+import WarehouseWorker from './WarehouseWorker'
 
 export const Navbar = () => {
     const userType = useSelector(selectUserType)
@@ -13,7 +14,8 @@ export const Navbar = () => {
     return (
         <>
             {userType === 'specialist' && <SpecialistNavbar />}
-            {userType === 'warehouseManager' && <WarehouseManagerNavbar />}
+            {userType === 'warehousemanager' && <WarehouseManagerNavbar />}
+            {userType === 'warehouseworker' && <WarehouseWorker />}
             {userType === 'admin' && <AdminNavBar />}
         </>
     )

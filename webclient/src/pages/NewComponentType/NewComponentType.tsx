@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { addPart } from '../../reducers/partReducer'
 import { Link } from 'react-router-dom'
 
-export function AddNewPart() {
+export function NewComponentType() {
     const dispatch = useDispatch()
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()

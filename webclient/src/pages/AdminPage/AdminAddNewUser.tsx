@@ -9,18 +9,20 @@ import {
 } from '@mui/material'
 import { generatePassword } from '../LoginPage/passwordGenerator'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../store'
+import { UnathorizedAccess } from '../UnathorizedAccess/UnathorizedAccess'
 
-const possibleUserTypes = [
-    'Specialist',
-    'Warehouse Manager',
-    'Warehouse Worker',
-]
+const possibleUserTypes = ['Specialist', 'WarehouseManager', 'WarehouseWorker']
 
 export function AdminAddNewUser() {
     const [name, setName] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [role, setRole] = React.useState('Specialist')
     const [password, setPassword] = React.useState(generatePassword())
+    const currentUserRole = useSelector(
+        (state: RootState) => state.userReducer.userType
+    )
 
     const handleSubmit = (event: any) => {
         event.preventDefault()
@@ -44,8 +46,7 @@ export function AdminAddNewUser() {
                 console.error('Error:', error)
             })
     }
-
-    return (
+    return currentUserRole === 'admin' ? (
         <Box
             sx={{
                 display: 'flex',
@@ -146,5 +147,7 @@ export function AdminAddNewUser() {
                 </Button>
             </Box>
         </Box>
+    ) : (
+        <UnathorizedAccess />
     )
 }

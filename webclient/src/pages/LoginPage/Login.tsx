@@ -15,6 +15,7 @@ import { setUserData } from '../../reducers/userReducer'
 export default function Login() {
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
+    const [title, setTitle] = useState('')
     const handleSubmit = async (event: any) => {
         event.preventDefault()
 
@@ -33,18 +34,24 @@ export default function Login() {
             },
             body: JSON.stringify(data),
         })
-
-        const result = await response.json()
-        console.log(result)
-        dispatch(
-            setUserData({
-                userType: result.role,
-                userName: result.name,
-                userEmail: result.email,
-                userID: result.id,
+            .then((response) => response.json())
+            .then((data) => {
+                dispatch(
+                    setUserData({
+                        userType: data.role,
+                        userName: data.name,
+                        userEmail: data.email,
+                        userID: data.id,
+                    })
+                )
+                setTitle('Login successfully')
+                setOpen(true)
             })
-        )
-        setOpen(true)
+            // TODO add error handling
+            .catch((error) => {
+                setTitle('Bad credentials')
+                setOpen(true)
+            })
     }
 
     return (

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './store'
-import { AddNewPart } from './pages/NewPartPage/AddNewPart'
+import { NewComponentType } from './pages/NewComponentType/NewComponentType'
 import { ListPart } from './pages/ListPartPage/ListPart'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/LoginPage/Login'
@@ -31,7 +31,7 @@ root.render(
                     />
                     <Route
                         path='/addpart'
-                        element={<AddNewPart />}
+                        element={<NewComponentType />}
                     />
                     <Route
                         path='/adduser'
