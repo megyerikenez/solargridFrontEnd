@@ -1,12 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProjectStatus } from '../pages/ListProject/ListProject'
 
+export interface CustomerInterface {
+    name: string
+    phone: string
+    email: string
+}
+
 export interface ProjectInterface {
     id: number
     place: string
     description: string
     buyer: string
     status: string
+    customer: CustomerInterface
 }
 
 export interface ProjectStateInterface {

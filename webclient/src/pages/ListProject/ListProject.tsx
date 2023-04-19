@@ -19,9 +19,12 @@ import { updateProjectStatus } from '../../reducers/projectReducer'
 
 export enum ProjectStatus {
     NEW = 'New',
+    DRAFT = 'Draft',
+    WAIT = 'Wait',
+    SCHEDULED = 'Scheduled',
     IN_PROGRESS = 'In progress',
     COMPLETED = 'Completed',
-    CANCELLED = 'Cancelled',
+    FAILED = 'Failed',
 }
 
 export function ListProject() {
@@ -31,6 +34,7 @@ export function ListProject() {
     )
 
     const handleSelectChange = (
+        // TODO ADD endpoint to update project status
         event: React.ChangeEvent<{ value: unknown }>,
         id: number
     ) => {
@@ -57,6 +61,7 @@ export function ListProject() {
                         <TableCell>Name</TableCell>
                         <TableCell>Description</TableCell>
                         <TableCell>Status</TableCell>
+                        <TableCell>Customer info</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -88,23 +93,40 @@ export function ListProject() {
                                         <MenuItem value={ProjectStatus.NEW}>
                                             {ProjectStatus.NEW}
                                         </MenuItem>
+                                        <MenuItem value={ProjectStatus.DRAFT}>
+                                            {ProjectStatus.DRAFT}
+                                        </MenuItem>
+                                        <MenuItem value={ProjectStatus.WAIT}>
+                                            {ProjectStatus.WAIT}
+                                        </MenuItem>
+                                        <MenuItem
+                                            value={ProjectStatus.SCHEDULED}
+                                        >
+                                            {ProjectStatus.SCHEDULED}
+                                        </MenuItem>
                                         <MenuItem
                                             value={ProjectStatus.IN_PROGRESS}
                                         >
                                             {ProjectStatus.IN_PROGRESS}
                                         </MenuItem>
+
                                         <MenuItem
                                             value={ProjectStatus.COMPLETED}
                                         >
                                             {ProjectStatus.COMPLETED}
                                         </MenuItem>
-                                        <MenuItem
-                                            value={ProjectStatus.CANCELLED}
-                                        >
-                                            {ProjectStatus.CANCELLED}
+                                        <MenuItem value={ProjectStatus.FAILED}>
+                                            {ProjectStatus.FAILED}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
+                            </TableCell>
+                            <TableCell>
+                                {project.customer.name}
+                                <br />
+                                {project.customer.phone}
+                                <br />
+                                {project.customer.email}
                             </TableCell>
                         </TableRow>
                     ))}

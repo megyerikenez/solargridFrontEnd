@@ -3,29 +3,62 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addProject } from '../../reducers/projectReducer'
 import { v4 as uuidv4 } from 'uuid'
+import {
+    CustomerInterface,
+    ProjectInterface,
+} from '../../reducers/projectReducer'
 
 export function NewProject() {
     const dispatch = useDispatch()
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const target = event.target as typeof event.target & {
             place: { value: string }
             description: { value: string }
             buyer: { value: string }
+            name: { value: string }
+            phone: { value: string }
+            email: { value: string }
         }
         const place = target.place.value
         const description = target.description.value
         const buyer = target.buyer.value
+        const customer: CustomerInterface = {
+            name: target.name.value,
+            phone: target.phone.value,
+            email: target.email.value,
+        }
         const randomId = uuidv4()
-        dispatch(
-            addProject({
-                id: parseInt(randomId),
-                place,
-                description,
-                buyer,
-                status: 'New',
+        const newProject: ProjectInterface = {
+            id: parseInt(randomId),
+            place,
+            description,
+            buyer,
+            status: 'New',
+            customer,
+        }
+        try {
+            const response = await fetch('http://localhost:100/Project', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: place,
+                    location: place,
+                    description: description,
+                    customer: customer,
+                }),
             })
-        )
+            if (response.ok) {
+                dispatch(addProject(newProject))
+                console.log('Project added successfully')
+            } else {
+                console.log('Error adding project')
+            }
+        } catch (error) {
+            console.log('Error adding project', error)
+        }
     }
 
     return (
@@ -75,6 +108,36 @@ export function NewProject() {
                     label='Buyer'
                     name='buyer'
                     autoComplete='buyer'
+                    autoFocus
+                />
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='name'
+                    label='Name'
+                    name='name'
+                    autoComplete='name'
+                    autoFocus
+                />
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='phone'
+                    label='Phone'
+                    name='phone'
+                    autoComplete='phone'
+                    autoFocus
+                />
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='email'
+                    label='Email'
+                    name='email'
+                    autoComplete='email'
                     autoFocus
                 />
                 <Button

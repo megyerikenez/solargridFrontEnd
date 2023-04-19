@@ -15,6 +15,7 @@ import {
     addNewComponent,
     componentInterface,
 } from '../../reducers/componentReducer'
+import { ProjectInterface, addProject } from '../../reducers/projectReducer'
 
 export default function Login() {
     const dispatch = useDispatch()
@@ -39,6 +40,14 @@ export default function Login() {
             })
         }
 
+        async function getProjects() {
+            const response = await fetch('http://localhost:100/Project')
+            const data = await response.json()
+            data.forEach((project: ProjectInterface) => {
+                dispatch(addProject(project))
+            })
+        }
+
         const response = await fetch('http://localhost:100/Auth/Login', {
             method: 'POST',
             headers: {
@@ -59,6 +68,7 @@ export default function Login() {
                 setTitle('Login successfully')
                 setOpen(true)
                 getComponents()
+                getProjects()
             })
             // TODO add error handling
             .catch((error) => {
