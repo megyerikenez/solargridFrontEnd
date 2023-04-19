@@ -30,12 +30,14 @@ export function NewProject() {
         }
         const randomId = uuidv4()
         const newProject: ProjectInterface = {
-            id: parseInt(randomId),
+            id: randomId,
             place,
             description,
             buyer,
             status: 'New',
             customer,
+            hourlyPrice: 0,
+            workHours: 0,
         }
         try {
             const response = await fetch('http://localhost:100/Project', {

@@ -36,7 +36,7 @@ export function ListProject() {
     const handleSelectChange = (
         // TODO ADD endpoint to update project status
         event: React.ChangeEvent<{ value: unknown }>,
-        id: number
+        id: string
     ) => {
         dispatch(
             updateProjectStatus({
@@ -62,6 +62,8 @@ export function ListProject() {
                         <TableCell>Description</TableCell>
                         <TableCell>Status</TableCell>
                         <TableCell>Customer info</TableCell>
+                        <TableCell>Hourly Price</TableCell>
+                        <TableCell>Work Hours</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -128,6 +130,8 @@ export function ListProject() {
                                 <br />
                                 {project.customer.email}
                             </TableCell>
+                            <TableCell>{project.hourlyPrice}</TableCell>
+                            <TableCell>{project.workHours}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

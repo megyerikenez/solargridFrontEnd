@@ -8,12 +8,14 @@ export interface CustomerInterface {
 }
 
 export interface ProjectInterface {
-    id: number
+    id: string
     place: string
     description: string
     buyer: string
     status: string
     customer: CustomerInterface
+    hourlyPrice: number
+    workHours: number
 }
 
 export interface ProjectStateInterface {
@@ -44,7 +46,7 @@ export const projectSlice = createSlice({
         },
         updateProjectStatus: (
             state,
-            action: PayloadAction<{ id: number; status: ProjectStatus }>
+            action: PayloadAction<{ id: string; status: ProjectStatus }>
         ) => {
             const { id, status } = action.payload
             const projectIndex = state.projects.findIndex(
@@ -52,6 +54,18 @@ export const projectSlice = createSlice({
             )
             if (projectIndex !== -1) {
                 state.projects[projectIndex].status = status
+            }
+        },
+        updateProjectHourlyPrice: (
+            state,
+            action: PayloadAction<{ id: string; price: number }>
+        ) => {
+            const { id, price } = action.payload
+            const projectIndex = state.projects.findIndex(
+                (project) => project.id === id
+            )
+            if (projectIndex !== -1) {
+                state.projects[projectIndex].hourlyPrice = price
             }
         },
     },
