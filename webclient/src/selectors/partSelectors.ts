@@ -1,3 +1,4 @@
 import { RootState } from '../store'
 
-export const selectPartState = (state: RootState) => state.partReducer.shelf
+export const selectComponentState = (state: RootState) =>
+    state.componentReducer.components

@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux'
 import { selectUserType } from '../../selectors/userSelectors'
 import SpecialistNavbar from './SpecialistNavbar'
-import WarehouseManagerNavbar from './SpecialistNavbar'
+import WarehouseManagerNavbar from './WarehouseManagerNavbar'
 import { useEffect } from 'react'
 import AdminNavBar from './AdminNavbar'
-import WarehouseWorker from './WarehouseWorker'
+import WarehouseWorkerNavbar from './WarehouseWorkerNavbar'
 
 export const Navbar = () => {
     const userType = useSelector(selectUserType)
@@ -15,7 +15,7 @@ export const Navbar = () => {
         <>
             {userType === 'specialist' && <SpecialistNavbar />}
             {userType === 'warehousemanager' && <WarehouseManagerNavbar />}
-            {userType === 'warehouseworker' && <WarehouseWorker />}
+            {userType === 'warehouseworker' && <WarehouseWorkerNavbar />}
             {userType === 'admin' && <AdminNavBar />}
         </>
     )

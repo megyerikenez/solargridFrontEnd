@@ -27,7 +27,7 @@ const navItems = [
     { name: 'Parts', link: '/partlist' },
 ]
 
-export default function WarehouseWorker(props: Props) {
+export default function WarehouseWorkerNavbar(props: Props) {
     const { window } = props
     const [mobileOpen, setMobileOpen] = useState(false)
 

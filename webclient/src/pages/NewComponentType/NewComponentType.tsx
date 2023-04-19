@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { addPart } from '../../reducers/partReducer'
+import { addcomponent } from '../../reducers/componentReducer'
 import { Link } from 'react-router-dom'
 
 export function NewComponentType() {
@@ -8,14 +8,14 @@ export function NewComponentType() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const target = event.target as typeof event.target & {
-            partName: { value: string }
-            partPrice: { value: string }
-            partMaxQuantity: { value: string }
+            componentName: { value: string }
+            componentPrice: { value: string }
+            componentMaxQuantity: { value: string }
         }
-        const name = target.partName.value
-        const price = parseInt(target.partPrice.value)
-        const maxQuantity = parseInt(target.partMaxQuantity.value)
-        dispatch(addPart({ name, price, maxQuantity }))
+        const name = target.componentName.value
+        const price = parseInt(target.componentPrice.value)
+        const maxQuantity = parseInt(target.componentMaxQuantity.value)
+        dispatch(addcomponent({ name, price, maxQuantity }))
     }
 
     return (
@@ -30,7 +30,7 @@ export function NewComponentType() {
                 component='h1'
                 variant='h5'
             >
-                Add a new part
+                Add a new component type
             </Typography>
 
             <Box
@@ -41,30 +41,30 @@ export function NewComponentType() {
                     margin='normal'
                     required
                     fullWidth
-                    id='partName'
-                    label='Part Name'
-                    name='partName'
-                    autoComplete='partName'
+                    id='componentName'
+                    label='component Name'
+                    name='componentName'
+                    autoComplete='componentName'
                     autoFocus
                 />
                 <TextField
                     margin='normal'
                     required
                     fullWidth
-                    id='partPrice'
-                    label='Part Price'
-                    name='partPrice'
-                    autoComplete='partPrice'
+                    id='componentPrice'
+                    label='component Price'
+                    name='componentPrice'
+                    autoComplete='componentPrice'
                     autoFocus
                 />
                 <TextField
                     margin='normal'
                     required
                     fullWidth
-                    id='partMaxQuantity'
-                    label='Part Max Quantity'
-                    name='partMaxQuantity'
-                    autoComplete='partMaxQuantity'
+                    id='componentMaxQuantity'
+                    label='component Max Quantity'
+                    name='componentMaxQuantity'
+                    autoComplete='componentMaxQuantity'
                     autoFocus
                 />
                 <Button
@@ -73,9 +73,9 @@ export function NewComponentType() {
                     variant='contained'
                     sx={{ mt: 3, mb: 2 }}
                 >
-                    Add new part
+                    Add new component
                 </Button>
-                <Link to='list'>list of parts</Link>
+                <Link to='list'>list of components</Link>
             </Box>
         </Box>
     )

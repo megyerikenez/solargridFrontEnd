@@ -2,35 +2,41 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import { partInterface, updatePart } from '../../reducers/partReducer'
+import {
+    componentInterface,
+    updatecomponent,
+} from '../../reducers/componentReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
-import { Link } from 'react-router-dom'
 
-export function ListPart() {
-    const parts = useSelector((state: RootState) => state.partReducer.shelf)
-    const [editedParts, setEditedParts] = useState<Record<string, number>>({})
+export function Listcomponent() {
+    const components = useSelector(
+        (state: RootState) => state.componentReducer.components
+    )
+    const [editedcomponents, setEditedcomponents] = useState<
+        Record<string, number>
+    >({})
     const dispatch = useDispatch()
     const handleEditPrice = (
         name: string,
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setEditedParts((prevEditedParts) => ({
-            ...prevEditedParts,
+        setEditedcomponents((prevEditedcomponents) => ({
+            ...prevEditedcomponents,
             [name]: parseFloat(event.target.value),
         }))
     }
 
     const handleSave = () => {
-        const newParts = parts.map((part) => ({
-            ...part,
+        const newcomponents = components.map((component) => ({
+            ...component,
             price:
-                editedParts[part.name] !== undefined
-                    ? editedParts[part.name]
-                    : part.price,
+                editedcomponents[component.name] !== undefined
+                    ? editedcomponents[component.name]
+                    : component.price,
         }))
 
-        newParts.forEach((part) => {
-            dispatch(updatePart(part))
+        newcomponents.forEach((component) => {
+            dispatch(updatecomponent(component))
         })
     }
 
@@ -48,31 +54,32 @@ export function ListPart() {
                 component='h1'
                 variant='h5'
             >
-                List of parts
+                List of components
             </Typography>
 
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Part Name</TableCell>
-                        <TableCell>Part Price</TableCell>
+                        <TableCell>component Name</TableCell>
+                        <TableCell>component Price</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {parts.map((part: partInterface) => (
-                        <TableRow key={part.name}>
-                            <TableCell>{part.name}</TableCell>
+                    {components.map((component: componentInterface) => (
+                        <TableRow key={component.name}>
+                            <TableCell>{component.name}</TableCell>
                             <TableCell>
                                 <TextField
                                     type='number'
                                     InputProps={{ inputProps: { min: 0 } }}
                                     value={
-                                        editedParts[part.name] !== undefined
-                                            ? editedParts[part.name]
-                                            : part.price
+                                        editedcomponents[component.name] !==
+                                        undefined
+                                            ? editedcomponents[component.name]
+                                            : component.price
                                     }
                                     onChange={(event) =>
-                                        handleEditPrice(part.name, event)
+                                        handleEditPrice(component.name, event)
                                     }
                                 />
                             </TableCell>

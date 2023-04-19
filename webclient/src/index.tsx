@@ -4,14 +4,13 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { NewComponentType } from './pages/NewComponentType/NewComponentType'
-import { ListPart } from './pages/ListPartPage/ListPart'
+import { Listcomponent } from './pages/ListPartPage/ListPart'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './pages/LoginPage/Login'
 import { Navbar } from './components/NavBar/Navbar'
 import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
 import { NewProject } from './pages/NewProjectPage/NewProject'
 import { ListProject } from './pages/ListProject/ListProject'
-import { ToastContainer } from 'react-toastify'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -27,7 +26,7 @@ root.render(
                     />
                     <Route
                         path='/partlist'
-                        element={<ListPart />}
+                        element={<Listcomponent />}
                     />
                     <Route
                         path='/addpart'
