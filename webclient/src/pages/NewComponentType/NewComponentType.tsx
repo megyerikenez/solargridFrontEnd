@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { addNewComponent } from '../../reducers/componentReducer'
+import { addNewComponentType } from '../../reducers/componentTypeReducer'
 import { Link } from 'react-router-dom'
 import { selectUserType } from '../../selectors/userSelectors'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
@@ -33,7 +33,7 @@ export function NewComponentType() {
 
             if (response.ok) {
                 dispatch(
-                    addNewComponent({
+                    addNewComponentType({
                         name,
                         price,
                         maxQuantityPerSlot,

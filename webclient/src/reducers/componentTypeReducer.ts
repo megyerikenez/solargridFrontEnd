@@ -15,11 +15,14 @@ const initialState: componentsStateInterface = {
     components: [],
 }
 
-export const componentSlice = createSlice({
+export const componentTypeSlice = createSlice({
     name: 'componentSlice',
     initialState,
     reducers: {
-        addNewComponent: (state, action: PayloadAction<componentInterface>) => {
+        addNewComponentType: (
+            state,
+            action: PayloadAction<componentInterface>
+        ) => {
             const newComponent = {
                 id: action.payload.id,
                 name: action.payload.name,
@@ -28,7 +31,10 @@ export const componentSlice = createSlice({
             }
             state.components.push(newComponent)
         },
-        updatecomponent: (state, action: PayloadAction<componentInterface>) => {
+        updatecomponentType: (
+            state,
+            action: PayloadAction<componentInterface>
+        ) => {
             const index = state.components.findIndex(
                 (component) => component.name === action.payload.name
             )
@@ -37,8 +43,9 @@ export const componentSlice = createSlice({
     },
 })
 
-export const { addNewComponent, updatecomponent } = componentSlice.actions
-export default componentSlice.reducer
+export const { addNewComponentType, updatecomponentType } =
+    componentTypeSlice.actions
+export default componentTypeSlice.reducer
 function useAppDispatch() {
     throw new Error('Function not implemented.')
 }

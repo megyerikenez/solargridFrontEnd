@@ -12,9 +12,9 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { setUserData } from '../../reducers/userReducer'
 import {
-    addNewComponent,
+    addNewComponentType,
     componentInterface,
-} from '../../reducers/componentReducer'
+} from '../../reducers/componentTypeReducer'
 import { ProjectInterface, addProject } from '../../reducers/projectReducer'
 
 export default function Login() {
@@ -36,7 +36,7 @@ export default function Login() {
             const response = await fetch('http://localhost:100/ComponentType')
             const data = await response.json()
             data.forEach((component: componentInterface) => {
-                dispatch(addNewComponent(component))
+                dispatch(addNewComponentType(component))
             })
         }
 
