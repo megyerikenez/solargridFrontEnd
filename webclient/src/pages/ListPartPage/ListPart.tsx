@@ -54,17 +54,29 @@ export function Listcomponent() {
                 component='h1'
                 variant='h5'
             >
-                List of components
+                List of Component
             </Typography>
 
-            <Table>
+            <Table
+                sx={{
+                    width: '100%',
+                    mt: 3,
+                }}
+            >
                 <TableHead>
                     <TableRow>
-                        <TableCell>component Name</TableCell>
-                        <TableCell>component Price</TableCell>
+                        <TableCell>Component Name</TableCell>
+                        <TableCell>Component Price</TableCell>
+                        <TableCell>Component Max Quantity</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody
+                    sx={{
+                        '& .MuiTableCell-root': {
+                            borderBottom: 'unset',
+                        },
+                    }}
+                >
                     {components.map((component: componentInterface) => (
                         <TableRow key={component.name}>
                             <TableCell>{component.name}</TableCell>
@@ -82,6 +94,9 @@ export function Listcomponent() {
                                         handleEditPrice(component.name, event)
                                     }
                                 />
+                            </TableCell>
+                            <TableCell>
+                                {component.maxQuantityPerSlot}
                             </TableCell>
                         </TableRow>
                     ))}

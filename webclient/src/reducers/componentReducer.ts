@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface componentInterface {
+    id: string
     name: string
     price: number
-    maxQuantity: number
+    maxQuantityPerSlot: number
 }
 
 export interface componentsStateInterface {
@@ -18,8 +19,14 @@ export const componentSlice = createSlice({
     name: 'componentSlice',
     initialState,
     reducers: {
-        addcomponent: (state, action: PayloadAction<componentInterface>) => {
-            state.components.push(action.payload)
+        addNewComponent: (state, action: PayloadAction<componentInterface>) => {
+            const newComponent = {
+                id: action.payload.id,
+                name: action.payload.name,
+                price: action.payload.price,
+                maxQuantityPerSlot: action.payload.maxQuantityPerSlot,
+            }
+            state.components.push(newComponent)
         },
         updatecomponent: (state, action: PayloadAction<componentInterface>) => {
             const index = state.components.findIndex(
@@ -30,5 +37,8 @@ export const componentSlice = createSlice({
     },
 })
 
-export const { addcomponent, updatecomponent } = componentSlice.actions
+export const { addNewComponent, updatecomponent } = componentSlice.actions
 export default componentSlice.reducer
+function useAppDispatch() {
+    throw new Error('Function not implemented.')
+}

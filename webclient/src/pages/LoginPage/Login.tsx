@@ -11,6 +11,10 @@ import { Container, Snackbar } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { setUserData } from '../../reducers/userReducer'
+import {
+    addNewComponent,
+    componentInterface,
+} from '../../reducers/componentReducer'
 
 export default function Login() {
     const dispatch = useDispatch()
@@ -25,6 +29,14 @@ export default function Login() {
         const data = {
             email: email,
             password: password,
+        }
+
+        async function getComponents() {
+            const response = await fetch('http://localhost:100/ComponentType')
+            const data = await response.json()
+            data.forEach((component: componentInterface) => {
+                dispatch(addNewComponent(component))
+            })
         }
 
         const response = await fetch('http://localhost:100/Auth/Login', {
@@ -46,6 +58,7 @@ export default function Login() {
                 )
                 setTitle('Login successfully')
                 setOpen(true)
+                getComponents()
             })
             // TODO add error handling
             .catch((error) => {
