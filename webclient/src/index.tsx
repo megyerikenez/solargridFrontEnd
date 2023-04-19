@@ -11,6 +11,7 @@ import { Navbar } from './components/NavBar/Navbar'
 import { AdminAddNewUser } from './pages/AdminPage/AdminAddNewUser'
 import { NewProject } from './pages/NewProjectPage/NewProject'
 import { ListProject } from './pages/ListProject/ListProject'
+import { IncomingComponents } from './pages/IncomingComponentsPage/IncomingComponents'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -43,6 +44,10 @@ root.render(
                     <Route
                         path='/listprojects'
                         element={<ListProject />}
+                    />
+                    <Route
+                        path='/incomingcomponents'
+                        element={<IncomingComponents />}
                     />
                 </Routes>
             </React.StrictMode>

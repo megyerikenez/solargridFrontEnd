@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { componentTypeInterface } from './componentTypeReducer'
 
 export interface componentInterface {
-    componentType: componentTypeInterface
+    componentType: componentTypeInterface | string
     id: string
     storage: string
     occupied: boolean
@@ -42,8 +42,5 @@ export const componentSlice = createSlice({
     },
 })
 
-export const {
-    addNewComponent: addNewComponentType,
-    updatecomponent: updatecomponentType,
-} = componentSlice.actions
+export const { addNewComponent, updatecomponent } = componentSlice.actions
 export default componentSlice.reducer
