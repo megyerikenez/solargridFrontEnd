@@ -2,42 +2,54 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import {
-    componentInterface,
-    updatecomponent,
-} from '../../reducers/componentReducer'
+import { componentInterface } from '../../reducers/componentReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 export function ListComponentType() {
     const components = useSelector(
         (state: RootState) => state.componentReducer.components
     )
-    const [editedcomponents, setEditedcomponents] = useState<
-        Record<string, number>
+    const [editedComponents, setEditedComponents] = useState<
+        Record<string, { price: number; maxQuantityPerSlot: number }>
     >({})
     const dispatch = useDispatch()
+
     const handleEditPrice = (
         name: string,
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setEditedcomponents((prevEditedcomponents) => ({
-            ...prevEditedcomponents,
-            [name]: parseFloat(event.target.value),
+        setEditedComponents((prevEditedComponents) => ({
+            ...prevEditedComponents,
+            [name]: {
+                ...prevEditedComponents[name],
+                price: parseFloat(event.target.value),
+            },
+        }))
+    }
+
+    const handleEditMaxQuantityPerSlot = (
+        name: string,
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setEditedComponents((prevEditedComponents) => ({
+            ...prevEditedComponents,
+            [name]: {
+                ...prevEditedComponents[name],
+                maxQuantityPerSlot: parseFloat(event.target.value),
+            },
         }))
     }
 
     const handleSave = () => {
         components.forEach((component) => {
-            const updatedPrice =
-                editedcomponents[component.name] !== undefined
-                    ? editedcomponents[component.name]
-                    : component.price
-
+            const editedComponent = editedComponents[component.name]
             const updatedComponent = {
                 id: component.id,
                 name: component.name,
-                price: updatedPrice,
-                maxQuantityPerSlot: component.maxQuantityPerSlot,
+                price: editedComponent?.price ?? component.price,
+                maxQuantityPerSlot:
+                    editedComponent?.maxQuantityPerSlot ??
+                    component.maxQuantityPerSlot,
             }
 
             fetch(`http://localhost:100/ComponentType?id=${component.id}`, {
@@ -78,17 +90,12 @@ export function ListComponentType() {
                 List of Component
             </Typography>
 
-            <Table
-                sx={{
-                    width: '100%',
-                    mt: 3,
-                }}
-            >
+            <Table sx={{ width: '100%', mt: 3 }}>
                 <TableHead>
                     <TableRow>
                         <TableCell>Component Name</TableCell>
                         <TableCell>Component Price</TableCell>
-                        <TableCell>Component Max Quantity</TableCell>
+                        <TableCell>Max Quantity Per Slot</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody
@@ -104,12 +111,9 @@ export function ListComponentType() {
                             <TableCell>
                                 <TextField
                                     type='number'
-                                    InputProps={{ inputProps: { min: 0 } }}
                                     value={
-                                        editedcomponents[component.name] !==
-                                        undefined
-                                            ? editedcomponents[component.name]
-                                            : component.price
+                                        editedComponents[component.name]
+                                            ?.price ?? component.price
                                     }
                                     onChange={(event) =>
                                         handleEditPrice(component.name, event)
@@ -117,16 +121,30 @@ export function ListComponentType() {
                                 />
                             </TableCell>
                             <TableCell>
-                                {component.maxQuantityPerSlot}
+                                <TextField
+                                    type='number'
+                                    value={
+                                        editedComponents[component.name]
+                                            ?.maxQuantityPerSlot ??
+                                        component.maxQuantityPerSlot
+                                    }
+                                    onChange={(event) =>
+                                        handleEditMaxQuantityPerSlot(
+                                            component.name,
+                                            event
+                                        )
+                                    }
+                                />
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
             <Button
+                type='submit'
                 variant='contained'
+                sx={{ mt: 3, mb: 2 }}
                 onClick={handleSave}
-                sx={{ mt: 3 }}
             >
                 Save
             </Button>
