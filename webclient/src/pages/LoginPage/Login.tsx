@@ -16,6 +16,10 @@ import {
     componentTypeInterface,
 } from '../../reducers/componentTypeReducer'
 import { ProjectInterface, addProject } from '../../reducers/projectReducer'
+import {
+    addNewComponent,
+    componentInterface,
+} from '../../reducers/componentReducer'
 
 export default function Login() {
     const dispatch = useDispatch()
@@ -32,11 +36,19 @@ export default function Login() {
             password: password,
         }
 
-        async function getComponents() {
+        async function getComponentsTypes() {
             const response = await fetch('http://localhost:100/ComponentType')
             const data = await response.json()
             data.forEach((component: componentTypeInterface) => {
                 dispatch(addNewComponentType(component))
+            })
+        }
+
+        async function getComponents() {
+            const response = await fetch('http://localhost:100/Component')
+            const data = await response.json()
+            data.forEach((component: componentInterface) => {
+                dispatch(addNewComponent(component))
             })
         }
 
@@ -67,6 +79,7 @@ export default function Login() {
                 )
                 setTitle('Login successfully')
                 setOpen(true)
+                getComponentsTypes()
                 getComponents()
                 getProjects()
             })

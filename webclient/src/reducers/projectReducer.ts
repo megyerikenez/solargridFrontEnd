@@ -16,6 +16,9 @@ export interface ProjectInterface {
     customer: CustomerInterface
     hourlyPrice: number
     workHours: number
+    projectPhase: {
+        name: string
+    }
 }
 
 export interface ProjectStateInterface {

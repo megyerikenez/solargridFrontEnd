@@ -38,6 +38,7 @@ export function NewProject() {
             customer,
             hourlyPrice: 0,
             workHours: 0,
+            projectPhase: { name: 'New' },
         }
         try {
             const response = await fetch('http://localhost:100/Project', {

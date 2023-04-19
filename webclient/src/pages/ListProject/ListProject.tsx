@@ -92,10 +92,12 @@ export function ListProject() {
                             >
                                 {project.place}
                             </TableCell>
-                            <TableCell>{project.description}</TableCell>
+                            <TableCell>{project.projectPhase.name}</TableCell>
                             <TableCell>
                                 <FormControl fullWidth>
-                                    <InputLabel>Status</InputLabel>
+                                    <InputLabel>
+                                        {project.projectPhase.name}
+                                    </InputLabel>
                                     <Select
                                         value={project.status}
                                         onChange={(
