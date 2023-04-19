@@ -2,7 +2,7 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import { componentInterface } from '../../reducers/componentTypeReducer'
+import { componentTypeInterface } from '../../reducers/componentTypeReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 export function ListComponentType() {
@@ -105,7 +105,7 @@ export function ListComponentType() {
                         },
                     }}
                 >
-                    {components.map((component: componentInterface) => (
+                    {components.map((component: componentTypeInterface) => (
                         <TableRow key={component.name}>
                             <TableCell>{component.name}</TableCell>
                             <TableCell>

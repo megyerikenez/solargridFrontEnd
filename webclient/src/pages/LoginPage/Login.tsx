@@ -13,7 +13,7 @@ import { useState } from 'react'
 import { setUserData } from '../../reducers/userReducer'
 import {
     addNewComponentType,
-    componentInterface,
+    componentTypeInterface,
 } from '../../reducers/componentTypeReducer'
 import { ProjectInterface, addProject } from '../../reducers/projectReducer'
 
@@ -35,7 +35,7 @@ export default function Login() {
         async function getComponents() {
             const response = await fetch('http://localhost:100/ComponentType')
             const data = await response.json()
-            data.forEach((component: componentInterface) => {
+            data.forEach((component: componentTypeInterface) => {
                 dispatch(addNewComponentType(component))
             })
         }
