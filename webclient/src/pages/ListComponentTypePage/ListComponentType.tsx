@@ -2,7 +2,10 @@ import { Box, Button, TextField, Typography } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
-import { componentTypeInterface } from '../../reducers/componentTypeReducer'
+import {
+    componentTypeInterface,
+    updatecomponentType,
+} from '../../reducers/componentTypeReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 
 export function ListComponentType() {
@@ -22,7 +25,7 @@ export function ListComponentType() {
             ...prevEditedComponents,
             [name]: {
                 ...prevEditedComponents[name],
-                price: parseFloat(event.target.value),
+                price: parseInt(event.target.value),
             },
         }))
     }
@@ -35,13 +38,13 @@ export function ListComponentType() {
             ...prevEditedComponents,
             [name]: {
                 ...prevEditedComponents[name],
-                maxQuantityPerSlot: parseFloat(event.target.value),
+                maxQuantityPerSlot: parseInt(event.target.value),
             },
         }))
     }
 
-    const handleSave = () => {
-        components.forEach((component) => {
+    const handleSave = async () => {
+        for (const component of components) {
             const editedComponent = editedComponents[component.name]
             const updatedComponent = {
                 id: component.id,
@@ -52,25 +55,27 @@ export function ListComponentType() {
                     component.maxQuantityPerSlot,
             }
 
-            fetch(`http://localhost:100/ComponentType?id=${component.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedComponent),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(
-                            `HTTP error! status: ${response.status}`
-                        )
+            try {
+                const response = await fetch(
+                    `http://localhost:100/ComponentType?id=${component.id}`,
+                    {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(updatedComponent),
                     }
-                    console.log(`Updated ${component.name} successfully!`)
-                })
-                .catch((error) => {
-                    console.error(`Error updating ${component.name}:`, error)
-                })
-        })
+                )
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+                dispatch(updatecomponentType(updatedComponent))
+                console.log(`Updated ${component.name}`)
+            } catch (error) {
+                console.error(`Error updating ${component.name}:`, error)
+            }
+        }
     }
 
     return (

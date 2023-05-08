@@ -35,10 +35,12 @@ export const componentTypeSlice = createSlice({
             state,
             action: PayloadAction<componentTypeInterface>
         ) => {
-            const index = state.components.findIndex(
-                (component) => component.name === action.payload.name
-            )
-            state.components[index] = action.payload
+            for (let i = 0; i < state.components.length; i++) {
+                if (state.components[i].id === action.payload.id) {
+                    console.log('jovagyok')
+                    state.components[i] = action.payload
+                }
+            }
         },
     },
 })
