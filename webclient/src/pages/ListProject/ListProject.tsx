@@ -14,13 +14,13 @@ import {
     Input,
 } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../store'
 import { useDispatch } from 'react-redux'
 import {
     updateProjectPrice,
     updateProjectStatus,
     updateProjectWorkHours,
 } from '../../reducers/projectReducer'
+import { getProjects } from '../../selectors/projectSelector'
 
 export enum ProjectStatus {
     NEW = 'New',
@@ -33,10 +33,8 @@ export enum ProjectStatus {
 }
 
 export function ListProject() {
+    const projects = useSelector(getProjects)
     const dispatch = useDispatch()
-    const projects = useSelector(
-        (state: RootState) => state.projectReducer.projects
-    )
 
     const handleStatusChange = async (
         event: React.ChangeEvent<{ value: unknown }>,
@@ -72,8 +70,13 @@ export function ListProject() {
         event: React.ChangeEvent<HTMLInputElement>,
         id: string
     ) => {
+        let hours = 0
         const hourlyPrice = event.target.value
-        const hours = event.target.value
+        for (let i = 0; i < projects.length; i++) {
+            if (projects[i].id === id) {
+                hours = projects[i].workHours
+            }
+        }
 
         try {
             const response = await fetch(
@@ -104,7 +107,12 @@ export function ListProject() {
         event: React.ChangeEvent<HTMLInputElement>,
         id: string
     ) => {
-        const hourlyPrice = event.target.value
+        let hourlyPrice = 0
+        for (let i = 0; i < projects.length; i++) {
+            if (projects[i].id === id) {
+                hourlyPrice = projects[i].hourlyPrice
+            }
+        }
         const hours = event.target.value
 
         try {
