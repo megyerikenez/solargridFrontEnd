@@ -11,11 +11,16 @@ import {
     Select,
     MenuItem,
     SelectChangeEvent,
+    Input,
 } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import { useDispatch } from 'react-redux'
-import { updateProjectStatus } from '../../reducers/projectReducer'
+import {
+    updateProjectPrice,
+    updateProjectStatus,
+    updateProjectWorkHours,
+} from '../../reducers/projectReducer'
 
 export enum ProjectStatus {
     NEW = 'New',
@@ -33,7 +38,7 @@ export function ListProject() {
         (state: RootState) => state.projectReducer.projects
     )
 
-    const handleSelectChange = async (
+    const handleStatusChange = async (
         event: React.ChangeEvent<{ value: unknown }>,
         id: string
     ) => {
@@ -57,6 +62,70 @@ export function ListProject() {
             }
 
             dispatch(updateProjectStatus({ id, status }))
+        } catch (error) {
+            console.error(error)
+            // handle error
+        }
+    }
+
+    const handlePriceChange = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+        id: string
+    ) => {
+        const hourlyPrice = event.target.value
+        const hours = event.target.value
+
+        try {
+            const response = await fetch(
+                `http://localhost:100/Project/${id}/price/${hourlyPrice}/hours/${hours}`,
+                {
+                    method: 'GET',
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+
+            // update local state
+            const updatedProject = {
+                ...projects.find((p) => p.id === id),
+                id: id || '',
+                hourlyPrice,
+            }
+            dispatch(updateProjectPrice(updatedProject))
+        } catch (error) {
+            console.error(error)
+            // handle error
+        }
+    }
+
+    const handleHoursChange = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+        id: string
+    ) => {
+        const hourlyPrice = event.target.value
+        const hours = event.target.value
+
+        try {
+            const response = await fetch(
+                `http://localhost:100/Project/${id}/price/${hourlyPrice}/hours/${hours}`,
+                {
+                    method: 'GET',
+                }
+            )
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+
+            // update local state
+            const updatedProject = {
+                ...projects.find((p) => p.id === id),
+                id: id || '',
+                workHours: hours,
+            }
+            dispatch(updateProjectWorkHours(updatedProject))
         } catch (error) {
             console.error(error)
             // handle error
@@ -104,7 +173,7 @@ export function ListProject() {
                                         onChange={(
                                             event: SelectChangeEvent<string>
                                         ) =>
-                                            handleSelectChange(
+                                            handleStatusChange(
                                                 event as React.ChangeEvent<{
                                                     value: unknown
                                                 }>,
@@ -151,12 +220,22 @@ export function ListProject() {
                                 {project.customer.email}
                             </TableCell>
                             <TableCell>
-                                {project.hourlyPrice
-                                    ? project.hourlyPrice
-                                    : '-'}
+                                <InputLabel>Hourly Price</InputLabel>
+                                <Input
+                                    value={project.hourlyPrice}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => handlePriceChange(event, project.id)}
+                                ></Input>
                             </TableCell>
                             <TableCell>
-                                {project.workHours ? project.workHours : '-'}
+                                <InputLabel>Work Hours</InputLabel>
+                                <Input
+                                    value={project.workHours}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => handleHoursChange(event, project.id)}
+                                ></Input>
                             </TableCell>
                         </TableRow>
                     ))}

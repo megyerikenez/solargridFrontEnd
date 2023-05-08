@@ -59,21 +59,39 @@ export const projectSlice = createSlice({
                 state.projects[projectIndex].status = status
             }
         },
-        updateProjectHourlyPrice: (
+        updateProjectPrice: (
             state,
-            action: PayloadAction<{ id: string; price: number }>
+            action: PayloadAction<{ id: string; hourlyPrice: string }>
         ) => {
-            const { id, price } = action.payload
+            const { id, hourlyPrice } = action.payload
             const projectIndex = state.projects.findIndex(
                 (project) => project.id === id
             )
             if (projectIndex !== -1) {
-                state.projects[projectIndex].hourlyPrice = price
+                state.projects[projectIndex].hourlyPrice = parseInt(hourlyPrice)
+            }
+        },
+        updateProjectWorkHours: (
+            state,
+            action: PayloadAction<{ id: string; workHours: string }>
+        ) => {
+            const { id, workHours } = action.payload
+            const projectIndex = state.projects.findIndex(
+                (project) => project.id === id
+            )
+            if (projectIndex !== -1) {
+                state.projects[projectIndex].workHours = parseInt(workHours)
             }
         },
     },
 })
 
-export const { addProject, updateProject, removeProject, updateProjectStatus } =
-    projectSlice.actions
+export const {
+    addProject,
+    updateProject,
+    removeProject,
+    updateProjectStatus,
+    updateProjectPrice,
+    updateProjectWorkHours,
+} = projectSlice.actions
 export default projectSlice.reducer
