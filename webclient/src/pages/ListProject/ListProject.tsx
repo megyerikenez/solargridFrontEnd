@@ -81,18 +81,19 @@ export function ListProject() {
                         <TableCell>Customer info</TableCell>
                         <TableCell>Hourly Price</TableCell>
                         <TableCell>Work Hours</TableCell>
+                        <TableCell>Components</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {projects.map((project) => (
-                        <TableRow key={project.place}>
+                        <TableRow key={project.id}>
                             <TableCell
                                 component='th'
                                 scope='row'
                             >
-                                {project.place}
+                                {project.name}
                             </TableCell>
-                            <TableCell>{project.projectPhase.name}</TableCell>
+                            <TableCell>{project.description}</TableCell>
                             <TableCell>
                                 <FormControl fullWidth>
                                     <InputLabel>
@@ -149,8 +150,14 @@ export function ListProject() {
                                 <br />
                                 {project.customer.email}
                             </TableCell>
-                            <TableCell>{project.hourlyPrice}</TableCell>
-                            <TableCell>{project.workHours}</TableCell>
+                            <TableCell>
+                                {project.hourlyPrice
+                                    ? project.hourlyPrice
+                                    : '-'}
+                            </TableCell>
+                            <TableCell>
+                                {project.workHours ? project.workHours : '-'}
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

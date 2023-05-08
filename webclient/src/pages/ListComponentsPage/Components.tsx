@@ -9,18 +9,31 @@ import {
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
+import {
+    addNewComponent,
+    componentInterface,
+} from '../../reducers/componentReducer'
 
 export const Components = () => {
-    // get all projects from the store
-
+    const components = useSelector(
+        (state: RootState) => state.componentReducer.components
+    )
+    async function getComponents() {
+        const response = await fetch('http://localhost:100/Component')
+        const data = await response.json()
+        data.forEach((component: componentInterface) => {
+            if (!components.find((c) => c.id === component.id)) {
+                dispatch(addNewComponent(component))
+            }
+        })
+    }
+    getComponents()
     const projects = useSelector(
         (state: RootState) => state.projectReducer.projects
     )
     console.log(projects)
     const dispatch = useDispatch()
-    const components = useSelector(
-        (state: RootState) => state.componentReducer.components
-    )
+
     return (
         <Table>
             <TableHead>
@@ -53,10 +66,10 @@ export const Components = () => {
                                 <Select>
                                     {projects.map((project) => (
                                         <MenuItem
-                                            id='project'
-                                            value={project.id}
+                                            id={project.id}
+                                            value={project.name}
                                         >
-                                            {project.place}
+                                            {project.description}
                                         </MenuItem>
                                     ))}
                                 </Select>

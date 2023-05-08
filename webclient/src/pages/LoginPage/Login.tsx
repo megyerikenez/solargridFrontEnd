@@ -56,6 +56,7 @@ export default function Login() {
             const response = await fetch('http://localhost:100/Project')
             const data = await response.json()
             data.forEach((project: ProjectInterface) => {
+                console.log(data, 'ez a data ami bemegy')
                 dispatch(addProject(project))
             })
         }

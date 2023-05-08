@@ -25,7 +25,7 @@ const drawerWidth = 240
 const navItems = [
     { name: 'New', link: '/newproject' },
     { name: 'Projects', link: '/listprojects' },
-    { name: 'Parts', link: '/listparts' },
+    { name: 'Components', link: '/listcomponents' },
 ]
 
 export default function WarehouseManagerNavbar(props: Props) {

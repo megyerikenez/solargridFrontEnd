@@ -8,10 +8,10 @@ export interface CustomerInterface {
 }
 
 export interface ProjectInterface {
+    name: string
     id: string
     place: string
     description: string
-    buyer: string
     status: string
     customer: CustomerInterface
     hourlyPrice: number

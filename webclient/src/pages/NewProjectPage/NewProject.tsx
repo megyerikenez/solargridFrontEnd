@@ -13,33 +13,25 @@ export function NewProject() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const target = event.target as typeof event.target & {
+            name: { value: string }
             place: { value: string }
             description: { value: string }
-            buyer: { value: string }
-            name: { value: string }
+            nameOfCustomer: { value: string }
             phone: { value: string }
             email: { value: string }
+            hourlyPrice: { value: string }
+            workHours: { value: string }
         }
+        const name = target.name.value
         const place = target.place.value
         const description = target.description.value
-        const buyer = target.buyer.value
         const customer: CustomerInterface = {
-            name: target.name.value,
+            name: target.nameOfCustomer.value,
             phone: target.phone.value,
             email: target.email.value,
         }
-        const randomId = uuidv4()
-        const newProject: ProjectInterface = {
-            id: randomId,
-            place,
-            description,
-            buyer,
-            status: 'New',
-            customer,
-            hourlyPrice: 0,
-            workHours: 0,
-            projectPhase: { name: 'New' },
-        }
+        const hourlyPrice = target.hourlyPrice.value
+        const workHours = target.workHours.value
         try {
             const response = await fetch('http://localhost:100/Project', {
                 method: 'POST',
@@ -47,15 +39,36 @@ export function NewProject() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name: place,
+                    name: name,
                     location: place,
                     description: description,
                     customer: customer,
+                    hourlyPrice: parseInt(hourlyPrice),
+                    workHours: parseInt(workHours),
                 }),
             })
             if (response.ok) {
-                dispatch(addProject(newProject))
+                const createdProject: ProjectInterface = await response.json()
+                dispatch(addProject(createdProject))
                 console.log('Project added successfully')
+
+                // Send another request with price and hours given
+                const priceGiven = parseInt(hourlyPrice)
+                const hoursGiven = parseInt(workHours)
+                const priceHoursResponse = await fetch(
+                    `http://localhost:100/Project/${createdProject.id}/price/${priceGiven}/hours/${hoursGiven}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            accept: 'text/plain',
+                        },
+                    }
+                )
+                if (priceHoursResponse.ok) {
+                    console.log('Price and hours sent successfully')
+                } else {
+                    console.log('Error sending price and hours')
+                }
             } else {
                 console.log('Error adding project')
             }
@@ -87,6 +100,16 @@ export function NewProject() {
                     margin='normal'
                     required
                     fullWidth
+                    id='name'
+                    label='name'
+                    name='Name'
+                    autoComplete='name'
+                    autoFocus
+                />
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
                     id='place'
                     label='Place'
                     name='place'
@@ -107,20 +130,10 @@ export function NewProject() {
                     margin='normal'
                     required
                     fullWidth
-                    id='buyer'
-                    label='Buyer'
-                    name='buyer'
-                    autoComplete='buyer'
-                    autoFocus
-                />
-                <TextField
-                    margin='normal'
-                    required
-                    fullWidth
-                    id='name'
-                    label='Name'
-                    name='name'
-                    autoComplete='name'
+                    id='nameOfCustomer'
+                    label='nameOfCustomer'
+                    name='nameOfCustomer'
+                    autoComplete='nameOfCustomer'
                     autoFocus
                 />
                 <TextField
@@ -143,6 +156,30 @@ export function NewProject() {
                     autoComplete='email'
                     autoFocus
                 />
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='hourlyPrice'
+                    label='Hourly price'
+                    name='hourlyPrice'
+                    autoComplete='hourlyPrice'
+                    autoFocus
+                >
+                    <option value='0'>0</option>
+                </TextField>
+                <TextField
+                    margin='normal'
+                    required
+                    fullWidth
+                    id='workHours'
+                    label='Work hours'
+                    name='workHours'
+                    autoComplete='workHours'
+                    autoFocus
+                >
+                    <option value='0'>0</option>
+                </TextField>
                 <Button
                     type='submit'
                     fullWidth
