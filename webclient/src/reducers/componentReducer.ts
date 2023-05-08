@@ -31,10 +31,11 @@ export const componentSlice = createSlice({
                 componentType: action.payload.componentType,
                 id: action.payload.id,
                 storage: action.payload.storage,
-                occupied: action.payload.occupied,
                 projectId: action.payload.projectId,
                 quantity: action.payload.quantity,
+                occupied: false,
             }
+            console.log(newComponent)
             state.components.push(newComponent)
         },
         updatecomponent: (state, action: PayloadAction<componentInterface>) => {

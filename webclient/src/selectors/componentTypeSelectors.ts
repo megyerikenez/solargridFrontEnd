@@ -6,4 +6,6 @@ export const selectComponentTypeOptions = (state: RootState) =>
     state.componentReducerType.components.map((component) => ({
         id: component.id,
         name: component.name,
+        price: component.price,
+        maxQuantityPerSlot: component.maxQuantityPerSlot,
     }))

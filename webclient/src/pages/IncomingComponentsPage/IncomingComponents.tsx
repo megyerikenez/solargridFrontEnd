@@ -5,6 +5,7 @@ import {
     selectComponentTypeOptions,
     selectComponentTypeState,
 } from '../../selectors/componentTypeSelectors'
+import { addNewComponent } from '../../reducers/componentReducer'
 
 export const IncomingComponents = () => {
     const dispatch = useDispatch()
@@ -47,6 +48,9 @@ export const IncomingComponents = () => {
                     )
                     return
                 }
+                let createdComponent = await response.json()
+                // TODO: Add component to store WAITING FOR BACKEND ENGINEERING
+                dispatch(addNewComponent(createdComponent))
                 setComponentTypeId('')
                 setStorage('')
                 setProjectId('')
