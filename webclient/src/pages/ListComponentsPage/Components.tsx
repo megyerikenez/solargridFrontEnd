@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../store'
 import {
     addComponentFromResponse,
+    addProjectToComponentReducer,
     updateComponent,
 } from '../../reducers/componentReducer'
 import { useEffect, useState } from 'react'
@@ -54,6 +55,27 @@ export const Components = () => {
                   component.componentType.id === selectedComponentType
           )
         : components
+
+    const addProjectToComponent = async (
+        componentId: string,
+        projectId: string
+    ) => {
+        try {
+            const response = await fetch(
+                `http://localhost:100/Project/${projectId}/Component`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify([componentId]),
+                }
+            )
+            dispatch(addProjectToComponentReducer({ componentId, projectId }))
+        } catch (error) {
+            console.error(`Failed to add project to component: ${error}`)
+        }
+    }
 
     return (
         <Table>
@@ -126,6 +148,12 @@ export const Components = () => {
                                         <MenuItem
                                             key={project.id}
                                             value={project.id}
+                                            onClick={() =>
+                                                addProjectToComponent(
+                                                    component.id,
+                                                    project.id
+                                                )
+                                            }
                                         >
                                             {project.name}
                                         </MenuItem>

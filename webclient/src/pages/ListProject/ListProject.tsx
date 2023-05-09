@@ -21,6 +21,9 @@ import {
     updateProjectWorkHours,
 } from '../../reducers/projectReducer'
 import { getProjects } from '../../selectors/projectSelector'
+import { RootState } from '../../store'
+import { addComponentFromResponse } from '../../reducers/componentReducer'
+import { useEffect } from 'react'
 
 export enum ProjectStatus {
     NEW = 'New',
@@ -33,6 +36,23 @@ export enum ProjectStatus {
 }
 
 export function ListProject() {
+    async function getComponents() {
+        try {
+            const response = await fetch('http://localhost:100/Component')
+            const data = await response.json()
+            dispatch(addComponentFromResponse(data))
+        } catch (error) {
+            console.log('Error fetching components', error)
+        }
+    }
+
+    useEffect(() => {
+        getComponents()
+    }, [])
+
+    const components = useSelector(
+        (state: RootState) => state.componentReducer.components
+    )
     const projects = useSelector(getProjects)
     const dispatch = useDispatch()
 
@@ -173,9 +193,7 @@ export function ListProject() {
                             <TableCell>{project.description}</TableCell>
                             <TableCell>
                                 <FormControl fullWidth>
-                                    <InputLabel>
-                                        {project.projectPhase.name}
-                                    </InputLabel>
+                                    <InputLabel>{project.status}</InputLabel>
                                     <Select
                                         value={project.status}
                                         onChange={(
@@ -244,6 +262,22 @@ export function ListProject() {
                                         event: React.ChangeEvent<HTMLInputElement>
                                     ) => handleHoursChange(event, project.id)}
                                 ></Input>
+                            </TableCell>
+                            <TableCell>
+                                {components.map((component) =>
+                                    component.projectId === project.id ? (
+                                        <div>
+                                            <Typography>
+                                                {component.componentType.name}
+                                            </Typography>
+                                            <Typography>
+                                                Level: {component.storage.level}
+                                                Row: {component.storage.row}
+                                                Column: {component.storage.col}
+                                            </Typography>
+                                        </div>
+                                    ) : null
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

@@ -49,9 +49,25 @@ export const componentSlice = createSlice({
         ) => {
             state.components = action.payload
         },
+        addProjectToComponentReducer: (
+            state,
+            action: PayloadAction<{
+                componentId: string
+                projectId: string
+            }>
+        ) => {
+            const index = state.components.findIndex(
+                (component) => component.id === action.payload.componentId
+            )
+            state.components[index].projectId = action.payload.projectId
+        },
     },
 })
 
-export const { addNewComponent, updateComponent, addComponentFromResponse } =
-    componentSlice.actions
+export const {
+    addNewComponent,
+    updateComponent,
+    addComponentFromResponse,
+    addProjectToComponentReducer,
+} = componentSlice.actions
 export default componentSlice.reducer
