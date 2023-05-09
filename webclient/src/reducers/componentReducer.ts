@@ -35,17 +35,23 @@ export const componentSlice = createSlice({
                 quantity: action.payload.quantity,
                 occupied: false,
             }
-            console.log(newComponent)
             state.components.push(newComponent)
         },
-        updatecomponent: (state, action: PayloadAction<componentInterface>) => {
+        updateComponent: (state, action: PayloadAction<componentInterface>) => {
             const index = state.components.findIndex(
                 (component) => component.id === action.payload.id
             )
             state.components[index] = action.payload
         },
+        addComponentFromResponse: (
+            state,
+            action: PayloadAction<componentInterface[]>
+        ) => {
+            state.components = action.payload
+        },
     },
 })
 
-export const { addNewComponent, updatecomponent } = componentSlice.actions
+export const { addNewComponent, updateComponent, addComponentFromResponse } =
+    componentSlice.actions
 export default componentSlice.reducer

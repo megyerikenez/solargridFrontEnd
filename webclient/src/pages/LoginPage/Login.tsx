@@ -44,14 +44,6 @@ export default function Login() {
             })
         }
 
-        async function getComponents() {
-            const response = await fetch('http://localhost:100/Component')
-            const data = await response.json()
-            data.forEach((component: componentInterface) => {
-                dispatch(addNewComponent(component))
-            })
-        }
-
         async function getProjects() {
             const response = await fetch('http://localhost:100/Project')
             const data = await response.json()
@@ -81,7 +73,6 @@ export default function Login() {
                 setTitle('Login successfully')
                 setOpen(true)
                 getComponentsTypes()
-                getComponents()
                 getProjects()
             })
             // TODO add error handling

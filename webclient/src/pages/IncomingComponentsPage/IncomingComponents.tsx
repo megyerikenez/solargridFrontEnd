@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Box, Button, MenuItem, TextField } from '@mui/material'
 import {
     selectComponentTypeOptions,
     selectComponentTypeState,
 } from '../../selectors/componentTypeSelectors'
-import { addNewComponent } from '../../reducers/componentReducer'
 
 export const IncomingComponents = () => {
-    const dispatch = useDispatch()
     const componentTypes = useSelector(selectComponentTypeState)
     const componentTypeIdsAndNames = useSelector(selectComponentTypeOptions)
 
@@ -48,9 +46,6 @@ export const IncomingComponents = () => {
                     )
                     return
                 }
-                let createdComponent = await response.json()
-                // TODO: Add component to store WAITING FOR BACKEND ENGINEERING
-                dispatch(addNewComponent(createdComponent))
                 setComponentTypeId('')
                 setStorage('')
                 setProjectId('')
