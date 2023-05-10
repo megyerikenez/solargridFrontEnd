@@ -14,6 +14,17 @@ interface componentClaimInterface {
     actualQuantity: number
     availableQuantity: number
 }
+
+interface optimalPathInterface {
+    componentTypeName: string
+    location: {
+        row: number
+        col: number
+        level: number
+    }
+    collectQuantity: number
+}
+
 export interface ProjectInterface {
     name: string
     id: string
@@ -27,6 +38,7 @@ export interface ProjectInterface {
         name: string
     }
     componentClaims: componentClaimInterface[]
+    optimalPath: optimalPathInterface[]
 }
 
 export interface ProjectStateInterface {
@@ -91,6 +103,21 @@ export const projectSlice = createSlice({
                 state.projects[projectIndex].workHours = parseInt(workHours)
             }
         },
+        addOptimalPath: (
+            state,
+            action: PayloadAction<{
+                id: string
+                optimalPath: optimalPathInterface[]
+            }>
+        ) => {
+            const { id, optimalPath } = action.payload
+            const projectIndex = state.projects.findIndex(
+                (project) => project.id === id
+            )
+            if (projectIndex !== -1) {
+                state.projects[projectIndex].optimalPath = optimalPath
+            }
+        },
     },
 })
 
@@ -101,5 +128,6 @@ export const {
     updateProjectStatus,
     updateProjectPrice,
     updateProjectWorkHours,
+    addOptimalPath,
 } = projectSlice.actions
 export default projectSlice.reducer

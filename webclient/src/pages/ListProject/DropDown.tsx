@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addComponentFromResponse } from '../../reducers/componentReducer'
 import {
     ProjectInterface,
+    addOptimalPath,
     updateProjectPrice,
     updateProjectStatus,
     updateProjectWorkHours,
@@ -35,6 +36,7 @@ import {
     selectComponentTypeOptions,
     selectComponentTypeState,
 } from '../../selectors/componentTypeSelectors'
+import { selectUserType } from '../../selectors/userSelectors'
 
 export enum ProjectStatus {
     NEW = 'New',
@@ -50,25 +52,24 @@ export function Row(project: ProjectInterface) {
     const projects = useSelector(getProjects)
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
-
+    const currentUserRole = useSelector(selectUserType)
     const componentTypes = useSelector(selectComponentTypeState)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const componentTypeIdsAndNames = useSelector(selectComponentTypeOptions)
-
-    const [selectedProjectId, setSelectedProjectId] = useState('')
     const [componentTypeId, setComponentTypeId] = useState('')
+    const [quantity, setQuantity] = useState(0)
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [storage, setStorage] = useState('')
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [projectId, setProjectId] = useState('')
-    const [quantity, setQuantity] = useState(0)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const componentTypeIdsAndNames = useSelector(selectComponentTypeOptions)
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         if (quantity >= 0) {
             try {
                 const response = await fetch(
-                    `http://localhost:100/Project/${selectedProjectId}/claims`,
+                    `http://localhost:100/Project/${project.id}/claims`,
                     {
                         method: 'PUT',
                         headers: {
@@ -77,7 +78,7 @@ export function Row(project: ProjectInterface) {
                         body: JSON.stringify({
                             componentTypeId: componentTypeId,
                             quantity: quantity,
-                            projectId: selectedProjectId,
+                            projectId: project.id,
                         }),
                     }
                 )
@@ -211,11 +212,28 @@ export function Row(project: ProjectInterface) {
         }
     }
 
+    async function getOptimalPath() {
+        try {
+            const response = await fetch(
+                `http://localhost:100/Project/${project.id}/PathData`
+            )
+            const data = await response.json()
+            dispatch(addOptimalPath({ id: project.id, optimalPath: data }))
+        } catch (error) {
+            console.log('Error fetching optimal path', error)
+        }
+    }
     useEffect(() => {
         getComponents()
+        getOptimalPath()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const optimalPath = useSelector(
+        (state: RootState) =>
+            state.projectReducer.projects.find((p) => p.id === project.id)
+                ?.optimalPath
+    )
     const components = useSelector(
         (state: RootState) => state.componentReducer.components
     )
@@ -451,50 +469,108 @@ export function Row(project: ProjectInterface) {
                                 </TableBody>
                             </Table>
                         </Box>
-                        <Box
-                            component='form'
-                            onSubmit={handleSubmit}
-                            sx={{
-                                display: 'flex',
-                                '& > :not(style)': { m: 1, width: '25ch' },
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <TextField
-                                select
-                                label='Component Type'
-                                value={componentTypeId}
-                                onChange={(event) =>
-                                    setComponentTypeId(event.target.value)
-                                }
-                            >
-                                {componentTypes.map((componentType) => (
-                                    <MenuItem
-                                        key={componentType.id}
-                                        value={componentType.id}
-                                    >
-                                        {componentType.name}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            <TextField
-                                label='Quantity'
-                                type='number'
-                                value={quantity}
-                                onChange={(event) => {
-                                    setQuantity(Number(event.target.value))
-                                    setSelectedProjectId(project.id)
+                        {currentUserRole === 'specialist' && (
+                            <Box
+                                component='form'
+                                onSubmit={handleSubmit}
+                                sx={{
+                                    display: 'flex',
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
                                 }}
-                            />
-                            <Button
-                                variant='contained'
-                                color='primary'
-                                type='submit'
                             >
-                                Add Need for Component
-                            </Button>
-                        </Box>
+                                <TextField
+                                    select
+                                    label='Component Type'
+                                    value={componentTypeId}
+                                    onChange={(event) =>
+                                        setComponentTypeId(event.target.value)
+                                    }
+                                >
+                                    {componentTypes.map((componentType) => (
+                                        <MenuItem
+                                            key={componentType.id}
+                                            value={componentType.id}
+                                        >
+                                            {componentType.name}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <TextField
+                                    label='Quantity'
+                                    type='number'
+                                    value={quantity}
+                                    onChange={(event) => {
+                                        setQuantity(Number(event.target.value))
+                                    }}
+                                />
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    type='submit'
+                                >
+                                    Add Need for Component
+                                </Button>
+                            </Box>
+                        )}
+                        {currentUserRole === 'warehouseworker' && (
+                            <Box sx={{ margin: 1 }}>
+                                <Typography
+                                    variant='h6'
+                                    gutterBottom
+                                    component='div'
+                                    align='center'
+                                    color={'black'}
+                                >
+                                    Optimal path for collection:
+                                    {
+                                        // @ts-ignore
+                                        // check if the path is empty
+                                        typeof project.optimalPath !==
+                                            'undefined' &&
+                                        project.optimalPath.length !== 0 ? (
+                                            project.optimalPath.map(
+                                                (component) => (
+                                                    <Typography
+                                                        variant='h6'
+                                                        gutterBottom
+                                                        component='div'
+                                                        align='center'
+                                                        color={'black'}
+                                                    >
+                                                        {component.collectQuantity +
+                                                            'x ' +
+                                                            component.componentTypeName +
+                                                            ' from ' +
+                                                            'row: ' +
+                                                            component.location
+                                                                .row +
+                                                            ' column: ' +
+                                                            component.location
+                                                                .col +
+                                                            ' level: ' +
+                                                            component.location
+                                                                .level +
+                                                            ' ->'}
+                                                    </Typography>
+                                                )
+                                            )
+                                        ) : (
+                                            <Typography
+                                                variant='h6'
+                                                gutterBottom
+                                                component='div'
+                                                align='center'
+                                                color={'red'}
+                                            >
+                                                No path found
+                                            </Typography>
+                                        )
+                                    }
+                                </Typography>
+                            </Box>
+                        )}
                     </Collapse>
                 </TableCell>
             </TableRow>
