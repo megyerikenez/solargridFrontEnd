@@ -27,6 +27,7 @@ const navItems = [
     { name: 'Component Types', link: '/componenttypelist' },
     { name: 'New Incoming Component', link: '/incomingcomponents' },
     { name: 'List Components', link: '/listcomponents' },
+    { name: 'Missing Components', link: '/missingcomponents' },
 ]
 
 export default function WarehouseManagerNavbar(props: Props) {

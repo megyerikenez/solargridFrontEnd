@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ProjectStatus } from '../pages/ListProject/ListProject'
+import { ProjectStatus } from '../pages/ListProject/DropDown'
+import { componentTypeInterface } from './componentTypeReducer'
 
 export interface CustomerInterface {
     name: string
@@ -7,6 +8,12 @@ export interface CustomerInterface {
     email: string
 }
 
+interface componentClaimInterface {
+    componentType: componentTypeInterface
+    quanity: number
+    actualQuantity: number
+    availableQuantity: number
+}
 export interface ProjectInterface {
     name: string
     id: string
@@ -19,6 +26,7 @@ export interface ProjectInterface {
     projectPhase: {
         name: string
     }
+    componentClaims: componentClaimInterface[]
 }
 
 export interface ProjectStateInterface {

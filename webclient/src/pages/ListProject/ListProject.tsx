@@ -1,167 +1,31 @@
 import {
-    Box,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
     Typography,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    SelectChangeEvent,
-    Input,
+    TableContainer,
+    Paper,
 } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import {
-    updateProjectPrice,
-    updateProjectStatus,
-    updateProjectWorkHours,
-} from '../../reducers/projectReducer'
 import { getProjects } from '../../selectors/projectSelector'
-import { RootState } from '../../store'
-import { addComponentFromResponse } from '../../reducers/componentReducer'
-import { useEffect } from 'react'
-
-export enum ProjectStatus {
-    NEW = 'New',
-    DRAFT = 'Draft',
-    WAIT = 'Wait',
-    SCHEDULED = 'Scheduled',
-    IN_PROGRESS = 'In progress',
-    COMPLETED = 'Completed',
-    FAILED = 'Failed',
-}
+import { Row } from './DropDown'
 
 export function ListProject() {
-    async function getComponents() {
-        try {
-            const response = await fetch('http://localhost:100/Component')
-            const data = await response.json()
-            dispatch(addComponentFromResponse(data))
-        } catch (error) {
-            console.log('Error fetching components', error)
-        }
-    }
-
-    useEffect(() => {
-        getComponents()
-    }, [])
-
-    const components = useSelector(
-        (state: RootState) => state.componentReducer.components
-    )
     const projects = useSelector(getProjects)
-    const dispatch = useDispatch()
-
-    const handleStatusChange = async (
-        event: React.ChangeEvent<{ value: unknown }>,
-        id: string
-    ) => {
-        const status = event.target.value as ProjectStatus
-
-        try {
-            const response = await fetch(
-                `http://localhost:100/Project/${id}/phase/${status}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id, status }),
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-
-            dispatch(updateProjectStatus({ id, status }))
-        } catch (error) {
-            console.error(error)
-            // handle error
-        }
-    }
-
-    const handlePriceChange = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-        id: string
-    ) => {
-        let hours = 0
-        const hourlyPrice = event.target.value
-        for (let i = 0; i < projects.length; i++) {
-            if (projects[i].id === id) {
-                hours = projects[i].workHours
-            }
-        }
-
-        try {
-            const response = await fetch(
-                `http://localhost:100/Project/${id}/price/${hourlyPrice}/hours/${hours}`,
-                {
-                    method: 'GET',
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-
-            // update local state
-            const updatedProject = {
-                ...projects.find((p) => p.id === id),
-                id: id || '',
-                hourlyPrice,
-            }
-            dispatch(updateProjectPrice(updatedProject))
-        } catch (error) {
-            console.error(error)
-            // handle error
-        }
-    }
-
-    const handleHoursChange = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-        id: string
-    ) => {
-        let hourlyPrice = 0
-        for (let i = 0; i < projects.length; i++) {
-            if (projects[i].id === id) {
-                hourlyPrice = projects[i].hourlyPrice
-            }
-        }
-        const hours = event.target.value
-
-        try {
-            const response = await fetch(
-                `http://localhost:100/Project/${id}/price/${hourlyPrice}/hours/${hours}`,
-                {
-                    method: 'GET',
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-
-            // update local state
-            const updatedProject = {
-                ...projects.find((p) => p.id === id),
-                id: id || '',
-                workHours: hours,
-            }
-            dispatch(updateProjectWorkHours(updatedProject))
-        } catch (error) {
-            console.error(error)
-            // handle error
-        }
-    }
-
     return (
-        <Box sx={{ m: 3 }}>
+        <TableContainer
+            sx={{
+                width: '70%',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                height: '100%',
+                margin: 'auto',
+                mt: 5,
+            }}
+            component={Paper}
+        >
             <Typography
                 variant='h4'
                 align='center'
@@ -169,120 +33,24 @@ export function ListProject() {
             >
                 List of Projects
             </Typography>
-            <Table>
+            <Table
+                sx={{ minWidth: 650 }}
+                aria-label='simple table'
+            >
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Description</TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Customer info</TableCell>
-                        <TableCell>Hourly Price</TableCell>
-                        <TableCell>Work Hours</TableCell>
-                        <TableCell>Components</TableCell>
+                        <TableCell></TableCell>
+                        <TableCell align='right'>Name</TableCell>
+                        <TableCell align='right'>Description</TableCell>
+                        <TableCell align='right'>Status</TableCell>
+                        <TableCell align='right'>Customer info</TableCell>
+                        <TableCell align='right'>Hourly Price</TableCell>
+                        <TableCell align='right'>Work Hours</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
-                    {projects.map((project) => (
-                        <TableRow key={project.id}>
-                            <TableCell
-                                component='th'
-                                scope='row'
-                            >
-                                {project.name}
-                            </TableCell>
-                            <TableCell>{project.description}</TableCell>
-                            <TableCell>
-                                <FormControl fullWidth>
-                                    <InputLabel>{project.status}</InputLabel>
-                                    <Select
-                                        value={project.status}
-                                        onChange={(
-                                            event: SelectChangeEvent<string>
-                                        ) =>
-                                            handleStatusChange(
-                                                event as React.ChangeEvent<{
-                                                    value: unknown
-                                                }>,
-                                                project.id
-                                            )
-                                        }
-                                    >
-                                        <MenuItem value={ProjectStatus.NEW}>
-                                            {ProjectStatus.NEW}
-                                        </MenuItem>
-                                        <MenuItem value={ProjectStatus.DRAFT}>
-                                            {ProjectStatus.DRAFT}
-                                        </MenuItem>
-                                        <MenuItem value={ProjectStatus.WAIT}>
-                                            {ProjectStatus.WAIT}
-                                        </MenuItem>
-                                        <MenuItem
-                                            value={ProjectStatus.SCHEDULED}
-                                        >
-                                            {ProjectStatus.SCHEDULED}
-                                        </MenuItem>
-                                        <MenuItem
-                                            value={ProjectStatus.IN_PROGRESS}
-                                        >
-                                            {ProjectStatus.IN_PROGRESS}
-                                        </MenuItem>
 
-                                        <MenuItem
-                                            value={ProjectStatus.COMPLETED}
-                                        >
-                                            {ProjectStatus.COMPLETED}
-                                        </MenuItem>
-                                        <MenuItem value={ProjectStatus.FAILED}>
-                                            {ProjectStatus.FAILED}
-                                        </MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </TableCell>
-                            <TableCell>
-                                {project.customer.name}
-                                <br />
-                                {project.customer.phone}
-                                <br />
-                                {project.customer.email}
-                            </TableCell>
-                            <TableCell>
-                                <InputLabel>Hourly Price</InputLabel>
-                                <Input
-                                    value={project.hourlyPrice}
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => handlePriceChange(event, project.id)}
-                                ></Input>
-                            </TableCell>
-                            <TableCell>
-                                <InputLabel>Work Hours</InputLabel>
-                                <Input
-                                    value={project.workHours}
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => handleHoursChange(event, project.id)}
-                                ></Input>
-                            </TableCell>
-                            <TableCell>
-                                {components.map((component) =>
-                                    component.projectId === project.id ? (
-                                        <div>
-                                            <Typography>
-                                                {component.componentType.name}
-                                            </Typography>
-                                            <Typography>
-                                                Level: {component.storage.level}
-                                                Row: {component.storage.row}
-                                                Column: {component.storage.col}
-                                            </Typography>
-                                        </div>
-                                    ) : null
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
+                <TableBody>{projects.map((project) => Row(project))}</TableBody>
             </Table>
-        </Box>
+        </TableContainer>
     )
 }
