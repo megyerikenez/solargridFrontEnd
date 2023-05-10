@@ -334,9 +334,7 @@ export function Row(project: ProjectInterface) {
                                     {project.componentClaims.map(
                                         (componentClaim) => (
                                             <TableRow
-                                                key={
-                                                    componentClaim.availableQuantity
-                                                }
+                                                key={componentClaim.quanity}
                                             >
                                                 <TableCell align='center'>
                                                     {
@@ -345,9 +343,7 @@ export function Row(project: ProjectInterface) {
                                                     }
                                                 </TableCell>
                                                 <TableCell align='center'>
-                                                    {
-                                                        componentClaim.availableQuantity
-                                                    }
+                                                    {componentClaim.quanity}
                                                 </TableCell>
                                             </TableRow>
                                         )
