@@ -515,7 +515,14 @@ export function Row(project: ProjectInterface) {
                             </Box>
                         )}
                         {currentUserRole === 'warehouseworker' && (
-                            <Box sx={{ margin: 1 }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    '& > :not(style)': { m: 1, width: '25ch' },
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <Typography
                                     variant='h6'
                                     gutterBottom
@@ -571,6 +578,60 @@ export function Row(project: ProjectInterface) {
                                 </Typography>
                             </Box>
                         )}
+                        {
+                            // if user type is specialist show the price of the project
+                            currentUserRole === 'specialist' && (
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        '& > :not(style)': {
+                                            m: 1,
+                                            width: '25ch',
+                                        },
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Typography
+                                        variant='h6'
+                                        gutterBottom
+                                        component='div'
+                                        align='center'
+                                        color={'black'}
+                                    >
+                                        Price of the components:
+                                        {project.projectPrice.priceByComponent.map(
+                                            (price) => (
+                                                <Typography
+                                                    variant='h6'
+                                                    gutterBottom
+                                                    component='div'
+                                                    align='center'
+                                                    color={'black'}
+                                                >
+                                                    {price.name +
+                                                        ': ' +
+                                                        price.totalPrice}
+                                                </Typography>
+                                            )
+                                        )}
+                                        <Typography
+                                            variant='h6'
+                                            gutterBottom
+                                            component='div'
+                                            align='center'
+                                            color={'black'}
+                                        >
+                                            Project price:
+                                            {project.projectPrice.projectPrice}
+                                            <br />
+                                            Total price:
+                                            {project.projectPrice.totalPrice}
+                                        </Typography>
+                                    </Typography>
+                                </Box>
+                            )
+                        }
                     </Collapse>
                 </TableCell>
             </TableRow>

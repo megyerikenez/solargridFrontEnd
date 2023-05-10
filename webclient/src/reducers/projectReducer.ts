@@ -8,6 +8,17 @@ export interface CustomerInterface {
     email: string
 }
 
+interface componentPriceInterface {
+    name: string
+    totalPrice: number
+}
+
+interface projectPriceInterface {
+    priceByComponent: componentPriceInterface[]
+    projectPrice: number
+    totalPrice: number
+}
+
 interface componentClaimInterface {
     componentType: componentTypeInterface
     quanity: number
@@ -39,6 +50,7 @@ export interface ProjectInterface {
     }
     componentClaims: componentClaimInterface[]
     optimalPath: optimalPathInterface[]
+    projectPrice: projectPriceInterface
 }
 
 export interface ProjectStateInterface {
