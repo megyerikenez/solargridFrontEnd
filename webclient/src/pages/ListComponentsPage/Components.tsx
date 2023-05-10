@@ -16,6 +16,7 @@ import {
     updateComponent,
 } from '../../reducers/componentReducer'
 import { useEffect, useState } from 'react'
+import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 
 export const Components = () => {
     const dispatch = useDispatch()
@@ -49,6 +50,10 @@ export const Components = () => {
         (state: RootState) => state.projectReducer.projects
     )
 
+    const currentUserRole = useSelector(
+        (state: RootState) => state.userReducer.userType
+    )
+
     const filteredComponents = selectedComponentType
         ? components.filter(
               (component) =>
@@ -77,7 +82,7 @@ export const Components = () => {
         }
     }
 
-    return (
+    return currentUserRole === 'warehousemanager' ? (
         <Table>
             <TableHead>
                 <TableRow>
@@ -173,5 +178,8 @@ export const Components = () => {
                 )}
             </TableBody>
         </Table>
+    ): (
+        <UnauthorizedAccess />
     )
+
 }
