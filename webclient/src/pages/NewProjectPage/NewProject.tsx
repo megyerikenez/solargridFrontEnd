@@ -13,6 +13,7 @@ export function NewProject() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const target = event.target as typeof event.target & {
+            id: { value: string }
             name: { value: string }
             place: { value: string }
             description: { value: string }
@@ -39,6 +40,7 @@ export function NewProject() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    id: uuidv4(),
                     name: name,
                     location: place,
                     description: description,
