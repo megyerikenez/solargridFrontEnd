@@ -5,6 +5,8 @@ import {
     selectComponentTypeOptions,
     selectComponentTypeState,
 } from '../../selectors/componentTypeSelectors'
+import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
+import { RootState } from '../../store'
 
 export const IncomingComponents = () => {
     const componentTypes = useSelector(selectComponentTypeState)
@@ -15,9 +17,15 @@ export const IncomingComponents = () => {
     const [projectId, setProjectId] = useState('')
     const [quantity, setQuantity] = useState(0)
 
+    const currentUserRole = useSelector(
+            (state: RootState) => state.userReducer.userType
+    )
+ 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
+        
+        
         const selectedComponentType = componentTypeIdsAndNames.find(
             (c) => c.id === componentTypeId
         )
@@ -57,7 +65,7 @@ export const IncomingComponents = () => {
         }
     }
 
-    return (
+    return currentUserRole === 'warehousemanager' ? (
         <Box
             component='form'
             onSubmit={handleSubmit}
@@ -97,5 +105,9 @@ export const IncomingComponents = () => {
                 Add Incoming Component
             </Button>
         </Box>
+    ) : (
+        <UnauthorizedAccess />
     )
+
+    
 }
