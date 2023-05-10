@@ -57,7 +57,7 @@ root.render(
                         element={<Components />}
                     />
                     <Route
-                        path='/listmissingcomponents'
+                        path='/missingcomponents'
                         element={<MissingComponents />}
                     />
                 </Routes>

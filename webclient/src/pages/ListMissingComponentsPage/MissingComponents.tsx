@@ -17,6 +17,7 @@ import {
 } from '../../reducers/componentReducer'
 import { useEffect, useState } from 'react'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
+import { getProjects } from '../../selectors/projectSelector'
 
 export const MissingComponents = () => {
     const dispatch = useDispatch()
@@ -38,76 +39,51 @@ export const MissingComponents = () => {
         getComponents()
     }, [])
 
-    const componentTypes = useSelector(
-        (state: RootState) => state.componentReducerType.components
-    )
+    const projects = useSelector(getProjects) 
 
-    const components = useSelector(
-        (state: RootState) => state.componentReducer.components // TODO: change to correct name if task is done
-    )
+    let missingComponents : { [key: string]: number } = {};
 
-    const projects = useSelector(
-        (state: RootState) => state.projectReducer.projects
-    )
+    projects.forEach((project) => {
+        project.componentClaims.forEach((component) => {
+            const missingComponentQuantity: number = component.quanity - component.actualQuantity
+            
+            if (missingComponentQuantity > 0) {
+                const key = component.componentType.name as keyof typeof missingComponents; 
 
-
-    // Mocking this shit
-    const missingComponents = [
-        {
-            'name': 'some component',
-            'quantity': 3,
-            'project': 'some project',
-            'id': 'mittomen'
-        },
-        {
-            'name': 'some component missing 2',
-            'quantity': 13,
-            'project': 'some 2222 project',
-            'id': 'mittoasd786'
-        }
-
-    ]
-
+                if (missingComponents[key] !== undefined) {
+                    missingComponents[key] += missingComponentQuantity
+                } else {
+                    missingComponents[key] = 0;
+                    missingComponents[key] = missingComponentQuantity
+                }
+            }
+        })
+    })
+         
     const currentUserRole = useSelector(
         (state: RootState) => state.userReducer.userType
-    )
-
-    const filteredComponents = selectedComponentType
-        ? components.filter(
-              (component) =>
-                  component.componentType.id === selectedComponentType
-          )
-        : components
-
-    
+    ) 
+       
     return currentUserRole === 'warehousemanager' ? (
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell>ID</TableCell>
                     <TableCell>Component Name</TableCell>
-                    <TableCell>Project</TableCell>
-                    <TableCell>Quantity needed</TableCell>
-               </TableRow>
+                    <TableCell>Quantity</TableCell>
+                   </TableRow>
             </TableHead>
             <TableBody>
-                    {missingComponents.length ? (
-                    missingComponents.map((component) => (
+                {Object.keys(missingComponents).length ? (
+                    Object.entries(missingComponents).map(([key, value]) => (
                         // @ts-ignore
-                        <TableRow key={component.id}>
+                        <TableRow key={key}>
                             <TableCell>
-                                {component.id}
+                                {key}
                             </TableCell>
                             <TableCell>
-                                {component.name}
+                                {value}
                             </TableCell>
-                            <TableCell>
-                                {component.project}
-                            </TableCell>
-                            <TableCell>
-                                {component.quantity}
-                            </TableCell>
-                            </TableRow>
+                        </TableRow>
                     ))
                 ) : (
                     <TableRow>
