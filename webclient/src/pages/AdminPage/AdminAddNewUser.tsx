@@ -39,7 +39,7 @@ export function AdminAddNewUser() {
                 password,
             }),
         })
-            .then((response) => {
+            .then(() => {
                 console.log('sikeres')
             })
             .catch((error) => {
