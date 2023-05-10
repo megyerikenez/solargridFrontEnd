@@ -16,15 +16,11 @@ import {
     componentTypeInterface,
 } from '../../reducers/componentTypeReducer'
 import { ProjectInterface, addProject } from '../../reducers/projectReducer'
-import {
-    addNewComponent,
-    componentInterface,
-} from '../../reducers/componentReducer'
 
 export default function Login() {
     const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
-    const [title, setTitle] = useState('')
+    const [, setTitle] = useState('')
     const handleSubmit = async (event: any) => {
         event.preventDefault()
 
@@ -53,7 +49,7 @@ export default function Login() {
             })
         }
 
-        const response = await fetch('http://localhost:100/Auth/Login', {
+        await fetch('http://localhost:100/Auth/Login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
