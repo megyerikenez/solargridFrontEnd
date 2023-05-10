@@ -13,19 +13,19 @@ export const IncomingComponents = () => {
     const componentTypeIdsAndNames = useSelector(selectComponentTypeOptions)
 
     const [componentTypeId, setComponentTypeId] = useState('')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [storage, setStorage] = useState('')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [projectId, setProjectId] = useState('')
     const [quantity, setQuantity] = useState(0)
 
     const currentUserRole = useSelector(
-            (state: RootState) => state.userReducer.userType
+        (state: RootState) => state.userReducer.userType
     )
- 
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        
-        
         const selectedComponentType = componentTypeIdsAndNames.find(
             (c) => c.id === componentTypeId
         )
@@ -108,6 +108,4 @@ export const IncomingComponents = () => {
     ) : (
         <UnauthorizedAccess />
     )
-
-    
 }

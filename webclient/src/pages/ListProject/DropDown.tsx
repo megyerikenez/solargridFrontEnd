@@ -52,11 +52,14 @@ export function Row(project: ProjectInterface) {
     const [open, setOpen] = useState(false)
 
     const componentTypes = useSelector(selectComponentTypeState)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const componentTypeIdsAndNames = useSelector(selectComponentTypeOptions)
 
     const [selectedProjectId, setSelectedProjectId] = useState('')
     const [componentTypeId, setComponentTypeId] = useState('')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [storage, setStorage] = useState('')
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [projectId, setProjectId] = useState('')
     const [quantity, setQuantity] = useState(0)
 
@@ -210,6 +213,7 @@ export function Row(project: ProjectInterface) {
 
     useEffect(() => {
         getComponents()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const components = useSelector(

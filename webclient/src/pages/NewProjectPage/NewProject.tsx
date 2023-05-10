@@ -1,6 +1,5 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { addProject } from '../../reducers/projectReducer'
 import { v4 as uuidv4 } from 'uuid'
 import {
@@ -13,7 +12,7 @@ import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 export function NewProject() {
     const dispatch = useDispatch()
     const currentUserRole = useSelector(
-            (state: RootState) => state.userReducer.userType
+        (state: RootState) => state.userReducer.userType
     )
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -197,8 +196,7 @@ export function NewProject() {
                 </Button>
             </Box>
         </Box>
-    ): (
+    ) : (
         <UnauthorizedAccess />
     )
-
 }

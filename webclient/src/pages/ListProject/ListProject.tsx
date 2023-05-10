@@ -5,8 +5,6 @@ import {
     TableHead,
     TableRow,
     Typography,
-    TableContainer,
-    Paper,
     Box,
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +14,6 @@ import { addComponentFromResponse } from '../../reducers/componentReducer'
 import { useEffect } from 'react'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 import { Row } from './DropDown'
-import { updateProjectPrice, updateProjectStatus, updateProjectWorkHours } from '../../reducers/projectReducer'
 
 export enum ProjectStatus {
     NEW = 'New',
@@ -41,122 +38,15 @@ export function ListProject() {
 
     useEffect(() => {
         getComponents()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const components = useSelector(
-        (state: RootState) => state.componentReducer.components
-    )
-    
     const currentUserRole = useSelector(
         (state: RootState) => state.userReducer.userType
     )
 
     const projects = useSelector(getProjects)
     const dispatch = useDispatch()
-
-    const handleStatusChange = async (
-        event: React.ChangeEvent<{ value: unknown }>,
-        id: string
-    ) => {
-        const status = event.target.value as ProjectStatus
-
-        try {
-            const response = await fetch(
-                `http://localhost:100/Project/${id}/phase/${status}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id, status }),
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-
-            dispatch(updateProjectStatus({ id, status }))
-        } catch (error) {
-            console.error(error)
-            // handle error
-        }
-    }
-
-    const handlePriceChange = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-        id: string
-    ) => {
-        let hours = 0
-        const hourlyPrice = event.target.value
-        for (let i = 0; i < projects.length; i++) {
-            if (projects[i].id === id) {
-                hours = projects[i].workHours
-            }
-        }
-
-        try {
-            const response = await fetch(
-                `http://localhost:100/Project/${id}/price/${hourlyPrice}/hours/${hours}`,
-                {
-                    method: 'GET',
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-
-            // update local state
-            const updatedProject = {
-                ...projects.find((p) => p.id === id),
-                id: id || '',
-                hourlyPrice,
-            }
-            dispatch(updateProjectPrice(updatedProject))
-        } catch (error) {
-            console.error(error)
-            // handle error
-        }
-    }
-
-    const handleHoursChange = async (
-        event: React.ChangeEvent<HTMLInputElement>,
-        id: string
-    ) => {
-        let hourlyPrice = 0
-        for (let i = 0; i < projects.length; i++) {
-            if (projects[i].id === id) {
-                hourlyPrice = projects[i].hourlyPrice
-            }
-        }
-        const hours = event.target.value
-
-        try {
-            const response = await fetch(
-                `http://localhost:100/Project/${id}/price/${hourlyPrice}/hours/${hours}`,
-                {
-                    method: 'GET',
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
-
-            // update local state
-            const updatedProject = {
-                ...projects.find((p) => p.id === id),
-                id: id || '',
-                workHours: hours,
-            }
-            dispatch(updateProjectWorkHours(updatedProject))
-        } catch (error) {
-            console.error(error)
-            // handle error
-        }
-    }
 
     return currentUserRole === 'specialist' ? (
         <Box sx={{ m: 3 }}>
@@ -186,8 +76,7 @@ export function ListProject() {
                 <TableBody>{projects.map((project) => Row(project))}</TableBody>
             </Table>
         </Box>
-    ): (
+    ) : (
         <UnauthorizedAccess />
     )
-
 }
