@@ -439,7 +439,7 @@ export function Row(project: ProjectInterface) {
                                                 </TableCell>
                                                 <TableCell align='center'>
                                                     {componentClaim.quanity -
-                                                        componentClaim.availableQuantity}
+                                                        componentClaim.actualQuantity}
                                                 </TableCell>
                                             </TableRow>
                                         )
