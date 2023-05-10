@@ -10,8 +10,8 @@ import {
 import { generatePassword } from '../LoginPage/passwordGenerator'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../store'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
+import { selectUserType } from '../../selectors/userSelectors'
 
 const possibleUserTypes = ['Specialist', 'WarehouseManager', 'WarehouseWorker']
 
@@ -19,10 +19,9 @@ export function AdminAddNewUser() {
     const [name, setName] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [role, setRole] = React.useState('Specialist')
+    // eslint-disable-next-line
     const [password, setPassword] = React.useState(generatePassword())
-    const currentUserRole = useSelector(
-        (state: RootState) => state.userReducer.userType
-    )
+    const currentUserRole = useSelector(selectUserType)
 
     const handleSubmit = (event: any) => {
         event.preventDefault()

@@ -9,11 +9,11 @@ import {
 } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProjects } from '../../selectors/projectSelector'
-import { RootState } from '../../store'
 import { addComponentFromResponse } from '../../reducers/componentReducer'
 import { useEffect } from 'react'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 import { Row } from './DropDown'
+import { selectUserType } from '../../selectors/userSelectors'
 
 export enum ProjectStatus {
     NEW = 'New',
@@ -41,14 +41,13 @@ export function ListProject() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const currentUserRole = useSelector(
-        (state: RootState) => state.userReducer.userType
-    )
+    const currentUserRole = useSelector(selectUserType)
 
     const projects = useSelector(getProjects)
     const dispatch = useDispatch()
 
-    return currentUserRole === 'specialist' ? (
+    return currentUserRole === 'specialist' ||
+        currentUserRole === 'warehouseworker' ? (
         <Box sx={{ m: 3 }}>
             <Typography
                 variant='h4'

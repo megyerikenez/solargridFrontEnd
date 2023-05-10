@@ -22,10 +22,7 @@ interface Props {
 }
 
 const drawerWidth = 240
-const navItems = [
-    { name: 'Add part', link: '/addpart' },
-    { name: 'Parts', link: '/partlist' },
-]
+const navItems = [{ name: 'Projects', link: '/listprojects' }]
 
 export default function WarehouseWorkerNavbar(props: Props) {
     const { window } = props
@@ -44,7 +41,7 @@ export default function WarehouseWorkerNavbar(props: Props) {
                 variant='h6'
                 sx={{ my: 2 }}
             >
-                TODOOOOOOOOOOOOOOOOOOOO
+                Solar Grind
             </Typography>
             <Divider />
             <List>

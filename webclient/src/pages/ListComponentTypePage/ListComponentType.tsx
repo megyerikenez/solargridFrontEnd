@@ -8,16 +8,15 @@ import {
 } from '../../reducers/componentTypeReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
+import { selectUserType } from '../../selectors/userSelectors'
 
 export function ListComponentType() {
     const components = useSelector(
         (state: RootState) => state.componentReducerType.components
     )
 
-    const currentUserRole = useSelector(
-        (state: RootState) => state.userReducer.userType
-    )
- 
+    const currentUserRole = useSelector(selectUserType)
+
     const [editedComponents, setEditedComponents] = useState<
         Record<string, { price: number; maxQuantityPerSlot: number }>
     >({})
@@ -160,8 +159,7 @@ export function ListComponentType() {
                 Save
             </Button>
         </Box>
-    ): (
+    ) : (
         <UnauthorizedAccess />
     )
-
 }

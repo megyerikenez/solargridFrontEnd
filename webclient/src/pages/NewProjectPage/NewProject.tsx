@@ -6,14 +6,12 @@ import {
     CustomerInterface,
     ProjectInterface,
 } from '../../reducers/projectReducer'
-import { RootState } from '../../store'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
+import { selectUserType } from '../../selectors/userSelectors'
 
 export function NewProject() {
     const dispatch = useDispatch()
-    const currentUserRole = useSelector(
-        (state: RootState) => state.userReducer.userType
-    )
+    const currentUserRole = useSelector(selectUserType)
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const target = event.target as typeof event.target & {

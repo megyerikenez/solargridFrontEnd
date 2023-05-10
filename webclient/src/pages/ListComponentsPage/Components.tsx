@@ -17,6 +17,7 @@ import {
 } from '../../reducers/componentReducer'
 import { useEffect, useState } from 'react'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
+import { selectUserType } from '../../selectors/userSelectors'
 
 export const Components = () => {
     const dispatch = useDispatch()
@@ -36,6 +37,7 @@ export const Components = () => {
 
     useEffect(() => {
         getComponents()
+        // eslint-disable-next-line
     }, [])
 
     const componentTypes = useSelector(
@@ -50,9 +52,7 @@ export const Components = () => {
         (state: RootState) => state.projectReducer.projects
     )
 
-    const currentUserRole = useSelector(
-        (state: RootState) => state.userReducer.userType
-    )
+    const currentUserRole = useSelector(selectUserType)
 
     const filteredComponents = selectedComponentType
         ? components.filter(
@@ -66,16 +66,13 @@ export const Components = () => {
         projectId: string
     ) => {
         try {
-            const response = await fetch(
-                `http://localhost:100/Project/${projectId}/Component`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify([componentId]),
-                }
-            )
+            await fetch(`http://localhost:100/Project/${projectId}/Component`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify([componentId]),
+            })
             dispatch(addProjectToComponentReducer({ componentId, projectId }))
         } catch (error) {
             console.error(`Failed to add project to component: ${error}`)
@@ -178,8 +175,7 @@ export const Components = () => {
                 )}
             </TableBody>
         </Table>
-    ): (
+    ) : (
         <UnauthorizedAccess />
     )
-
 }

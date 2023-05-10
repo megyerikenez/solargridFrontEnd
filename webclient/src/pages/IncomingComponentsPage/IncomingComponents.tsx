@@ -6,7 +6,7 @@ import {
     selectComponentTypeState,
 } from '../../selectors/componentTypeSelectors'
 import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
-import { RootState } from '../../store'
+import { selectUserType } from '../../selectors/userSelectors'
 
 export const IncomingComponents = () => {
     const componentTypes = useSelector(selectComponentTypeState)
@@ -19,9 +19,7 @@ export const IncomingComponents = () => {
     const [projectId, setProjectId] = useState('')
     const [quantity, setQuantity] = useState(0)
 
-    const currentUserRole = useSelector(
-        (state: RootState) => state.userReducer.userType
-    )
+    const currentUserRole = useSelector(selectUserType)
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
