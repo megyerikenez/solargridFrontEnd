@@ -13,6 +13,8 @@ import { NewProject } from './pages/NewProjectPage/NewProject'
 import { ListProject } from './pages/ListProject/ListProject'
 import { IncomingComponents } from './pages/IncomingComponentsPage/IncomingComponents'
 import { Components } from './pages/ListComponentsPage/Components'
+import { MissingComponents } from './pages/ListMissingComponentsPage/MissingComponents'
+
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -51,8 +53,12 @@ root.render(
                         element={<IncomingComponents />}
                     />
                     <Route
-                        path='listcomponents'
+                        path='/listcomponents'
                         element={<Components />}
+                    />
+                    <Route
+                        path='/listmissingcomponents'
+                        element={<MissingComponents />}
                     />
                 </Routes>
             </React.StrictMode>
