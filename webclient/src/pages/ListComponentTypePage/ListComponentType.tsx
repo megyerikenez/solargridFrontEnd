@@ -7,11 +7,17 @@ import {
     updatecomponentType,
 } from '../../reducers/componentTypeReducer'
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
+import { UnauthorizedAccess } from '../UnathorizedAccess/UnauthorizedAccess'
 
 export function ListComponentType() {
     const components = useSelector(
         (state: RootState) => state.componentReducerType.components
     )
+
+    const currentUserRole = useSelector(
+        (state: RootState) => state.userReducer.userType
+    )
+ 
     const [editedComponents, setEditedComponents] = useState<
         Record<string, { price: number; maxQuantityPerSlot: number }>
     >({})
@@ -78,7 +84,7 @@ export function ListComponentType() {
         }
     }
 
-    return (
+    return currentUserRole === 'warehousemanager' ? (
         <Box
             sx={{
                 display: 'flex',
@@ -154,5 +160,8 @@ export function ListComponentType() {
                 Save
             </Button>
         </Box>
+    ): (
+        <UnauthorizedAccess />
     )
+
 }
